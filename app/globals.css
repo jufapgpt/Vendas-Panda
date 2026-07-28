@@ -548,6 +548,11 @@ input:focus-visible {
   stroke-width: 2;
 }
 
+.chart-bar {
+  fill: currentColor;
+  opacity: 0.92;
+}
+
 .series-total {
   color: var(--blue);
 }
@@ -566,10 +571,16 @@ input:focus-visible {
 
 .chart-legend .series-store-a {
   background: #7796ed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
 }
 
 .chart-legend .series-store-b {
   background: #9aa4b2;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
 }
 
 .ranking-panel {

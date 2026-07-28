@@ -198,26 +198,32 @@ function DailySalesChart({
   const max = Math.max(...values, 1);
   const plotWidth = width - pad.left - pad.right;
   const plotHeight = height - pad.top - pad.bottom;
+  const barWidth = Math.min(12, (plotWidth / Math.max(points.length, 1)) * 0.28);
+  const barGap = 2;
+  const barGroupWidth =
+    storeNames.length * barWidth + Math.max(storeNames.length - 1, 0) * barGap;
   const x = (index: number) =>
     pad.left + (points.length <= 1 ? 0 : (index / (points.length - 1)) * plotWidth);
   const y = (value: number) => pad.top + plotHeight - (value / max) * plotHeight;
-  const series = [
-    { name: "Total", className: "series-total", values: points.map((p) => p.total) },
-    ...storeNames.map((store, index) => ({
-      name: shortStore(store),
-      className: index === 0 ? "series-store-a" : "series-store-b",
-      values: points.map((p) => p.stores[store] ?? 0),
-    })),
-  ];
+  const storeSeries = storeNames.map((store, index) => ({
+    name: shortStore(store),
+    className: index === 0 ? "series-store-a" : "series-store-b",
+    values: points.map((p) => p.stores[store] ?? 0),
+  }));
+  const totalValues = points.map((point) => point.total);
   const tickIndexes = [...new Set([0, Math.floor((points.length - 1) / 2), points.length - 1])];
 
   return (
     <div className="daily-chart-wrap">
       <div className="chart-legend" aria-label="Legenda do gráfico">
-        {series.map((item) => (
-          <span key={item.name}>
-            <i className={item.className} aria-hidden="true" />
-            {item.name}
+        <span>
+          <i className="series-total" aria-hidden="true" />
+          Total
+        </span>
+        {storeSeries.map((store) => (
+          <span key={store.name}>
+            <i className={store.className} aria-hidden="true" />
+            {store.name}
           </span>
         ))}
       </div>
@@ -229,8 +235,8 @@ function DailySalesChart({
       >
         <title id="daily-title">Venda líquida diária total e por loja</title>
         <desc id="daily-desc">
-          Linhas com a receita líquida de cada dia para o total consolidado e para
-          as duas lojas.
+          Colunas agrupadas mostram a receita líquida de cada loja e a linha mostra
+          o total consolidado de cada dia.
         </desc>
         {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
           const value = max * ratio;
@@ -244,19 +250,39 @@ function DailySalesChart({
             </g>
           );
         })}
-        {series.map((item) => (
-          <g className={item.className} key={item.name}>
-            <polyline
-              className="chart-line"
-              points={item.values.map((value, index) => `${x(index)},${y(value)}`).join(" ")}
-            />
-            {item.values.map((value, index) => (
-              <circle className="chart-point" cx={x(index)} cy={y(value)} r="3.4" key={`${item.name}-${index}`}>
-                <title>{`${points[index]?.label}: ${item.name} — ${money.format(value)}`}</title>
-              </circle>
-            ))}
+        {points.map((point, pointIndex) => (
+          <g key={point.date}>
+            {storeSeries.map((store, storeIndex) => {
+              const value = Math.max(store.values[pointIndex] ?? 0, 0);
+              const barX =
+                x(pointIndex) - barGroupWidth / 2 + storeIndex * (barWidth + barGap);
+              return (
+                <rect
+                  className={`chart-bar ${store.className}`}
+                  x={barX}
+                  y={y(value)}
+                  width={barWidth}
+                  height={Math.max(y(0) - y(value), 0)}
+                  rx="2"
+                  key={store.name}
+                >
+                  <title>{`${point.label}: ${store.name} — ${money.format(value)}`}</title>
+                </rect>
+              );
+            })}
           </g>
         ))}
+        <g className="series-total">
+          <polyline
+            className="chart-line"
+            points={totalValues.map((value, index) => `${x(index)},${y(value)}`).join(" ")}
+          />
+          {totalValues.map((value, index) => (
+            <circle className="chart-point" cx={x(index)} cy={y(value)} r="3.4" key={points[index]?.date}>
+              <title>{`${points[index]?.label}: Total — ${money.format(value)}`}</title>
+            </circle>
+          ))}
+        </g>
         {tickIndexes.map((index) => (
           <text
             className="chart-axis-label"
