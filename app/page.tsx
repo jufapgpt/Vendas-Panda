@@ -68,6 +68,14 @@ function normalizeSearch(value: string) {
     .trim();
 }
 
+function inventoryStatus(stock: number, sold: number) {
+  if (sold <= 0) return "Sem venda";
+  if (stock === 0) return "Sem estoque";
+  if (stock < sold) return "Crítico";
+  if (stock < sold * 2) return "Atenção";
+  return "Coberto";
+}
+
 function addMetric<K extends string>(
   map: Map<K, { revenue: number; units: number; profit: number }>,
   key: K,
@@ -255,11 +263,7 @@ function analyzeStock(rows: StockRow[], salesRows: SaleRow[]) {
       const sale = soldByVariant.get(key);
       const sold = sale?.sold ?? 0;
       const coverage = sold > 0 ? stock.total / sold : null;
-      let status = "Sem venda";
-      if (sold > 0 && stock.total === 0) status = "Sem estoque";
-      else if (sold > 0 && stock.total < sold) status = "Crítico";
-      else if (sold > 0 && stock.total < sold * 2) status = "Atenção";
-      else if (sold > 0) status = "Coberto";
+      const status = inventoryStatus(stock.total, sold);
       return {
         code: stock.code || sale?.code || "",
         description: stock.description || sale?.description || "",
@@ -471,6 +475,15 @@ export default function Home() {
     () => analyzeStock(filteredStockRows, filteredSalesRows),
     [filteredStockRows, filteredSalesRows],
   );
+  const phoneStockByModel = useMemo(() => {
+    const stockByModel = new Map<string, number>();
+    for (const row of filteredStockRows) {
+      if (!isPhoneProduct(row.product)) continue;
+      const model = phoneModelName(row.product);
+      stockByModel.set(model, (stockByModel.get(model) ?? 0) + row.quantity);
+    }
+    return stockByModel;
+  }, [filteredStockRows]);
   const visibleStockItems = useMemo(() => {
     const query = normalizeSearch(stockSearch);
     if (!query) return stockAnalysis.comparison;
@@ -778,25 +791,41 @@ export default function Home() {
               <span>Itens</span>
               <span>Receita líquida</span>
               <span>Margem %</span>
+              <span>Estoque</span>
+              <span>Situação</span>
             </div>
-            {analysis.phones.map((phone, index) => (
-              <div className="ranking-row" role="row" key={phone.name}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{phone.name}</strong>
-                <div className="microbar">
-                  <span style={{ width: `${(phone.revenue / phoneMax) * 100}%` }} />
+            {analysis.phones.map((phone, index) => {
+              const stock = phoneStockByModel.get(phone.name) ?? 0;
+              const status = inventoryStatus(stock, phone.units);
+              return (
+                <div className="ranking-row" role="row" key={phone.name}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{phone.name}</strong>
+                  <div className="microbar">
+                    <span style={{ width: `${(phone.revenue / phoneMax) * 100}%` }} />
+                  </div>
+                  <span>{integer.format(phone.units)}</span>
+                  <strong>{money.format(phone.revenue)}</strong>
+                  <strong
+                    className={
+                      phone.profit < 0 ? "ranking-margin negative" : "ranking-margin"
+                    }
+                  >
+                    {phone.revenue ? percent.format(phone.profit / phone.revenue) : "—"}
+                  </strong>
+                  <span>{integer.format(stock)}</span>
+                  <span
+                    className={`stock-status status-${status
+                      .normalize("NFD")
+                      .replace(/[\u0300-\u036f]/g, "")
+                      .replace(/\s+/g, "-")
+                      .toLowerCase()}`}
+                  >
+                    {status}
+                  </span>
                 </div>
-                <span>{integer.format(phone.units)}</span>
-                <strong>{money.format(phone.revenue)}</strong>
-                <strong
-                  className={
-                    phone.profit < 0 ? "ranking-margin negative" : "ranking-margin"
-                  }
-                >
-                  {phone.revenue ? percent.format(phone.profit / phone.revenue) : "—"}
-                </strong>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 

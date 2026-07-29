@@ -672,14 +672,16 @@ input:focus-visible {
 .ranking-row {
   display: grid;
   grid-template-columns:
-    48px
-    minmax(220px, 1.5fr)
-    minmax(140px, 1fr)
-    70px
-    minmax(130px, 0.7fr)
-    90px;
+    42px
+    minmax(190px, 1.35fr)
+    minmax(120px, 0.9fr)
+    58px
+    minmax(118px, 0.72fr)
+    76px
+    62px
+    96px;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
   padding: 0 24px;
 }
 
@@ -704,11 +706,14 @@ input:focus-visible {
 }
 
 .ranking-row > span:nth-child(4),
+.ranking-row > span:nth-child(7),
 .ranking-row > strong:nth-child(5),
 .ranking-row > strong:nth-child(6),
 .ranking-head > span:nth-child(4),
 .ranking-head > span:nth-child(5),
-.ranking-head > span:nth-child(6) {
+.ranking-head > span:nth-child(6),
+.ranking-head > span:nth-child(7),
+.ranking-head > span:nth-child(8) {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -1011,11 +1016,13 @@ footer {
   .ranking-row {
     grid-template-columns:
       38px
-      minmax(180px, 1.5fr)
-      minmax(100px, 1fr)
-      60px
-      minmax(110px, 0.8fr)
-      80px;
+      minmax(170px, 1.35fr)
+      minmax(100px, 0.9fr)
+      54px
+      minmax(108px, 0.72fr)
+      72px
+      58px
+      92px;
   }
 
   .stock-summary {
@@ -1165,7 +1172,7 @@ footer {
 
   .ranking-head,
   .ranking-row {
-    min-width: 820px;
+    min-width: 1040px;
   }
 
   footer {
