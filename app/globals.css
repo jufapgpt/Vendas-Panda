@@ -985,6 +985,102 @@ input:focus-visible {
   font-size: 10px;
 }
 
+.category-pies-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.category-pie-panel {
+  overflow: hidden;
+}
+
+.category-pie-body {
+  min-height: 318px;
+  padding: 30px 28px;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.86fr) minmax(250px, 1.14fr);
+  align-items: center;
+  gap: 34px;
+}
+
+.category-pie {
+  position: relative;
+  width: min(100%, 224px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.04);
+}
+
+.category-pie::after {
+  content: "";
+  width: 52%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px rgba(17, 24, 39, 0.035);
+}
+
+.category-pie > div {
+  position: absolute;
+  z-index: 1;
+  max-width: 116px;
+  text-align: center;
+}
+
+.category-pie > div strong,
+.category-pie > div span {
+  display: block;
+}
+
+.category-pie > div strong {
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.category-pie > div span {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.category-pie-legend {
+  display: grid;
+  gap: 15px;
+}
+
+.category-pie-legend > div {
+  display: grid;
+  grid-template-columns: 9px minmax(76px, 1fr) auto 42px;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+}
+
+.category-pie-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.category-pie-legend strong,
+.category-pie-legend small {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.category-pie-legend small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
 footer {
   padding: 22px 2px 0;
   display: flex;
@@ -1009,6 +1105,10 @@ footer {
   }
 
   .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-pies-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1116,6 +1216,10 @@ footer {
   }
 
   .category-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-pie-body {
     grid-template-columns: 1fr;
   }
 

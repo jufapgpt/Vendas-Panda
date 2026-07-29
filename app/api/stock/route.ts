@@ -90,7 +90,7 @@ export async function POST(request: Request) {
       const rows = parseStockWorkbook(buffer, store);
       if (!rows.length) {
         return Response.json(
-          { error: `Não encontrei estoque de celulares em ${file.name}.` },
+          { error: `Não encontrei itens de estoque em ${file.name}.` },
           { status: 400 },
         );
       }

@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import { isPhoneDescription } from "./categories";
 
 export type StockRow = {
   store: string;
@@ -44,15 +45,7 @@ export function phoneModelName(product: string) {
 }
 
 export function isPhoneProduct(product: string) {
-  const text = product.trim().toUpperCase();
-  if (
-    /PEL[IÍ]CULA|CARREGADOR|CABO|FONE|HEADSET|SMARTWATCH|SMART WATCH|\bWATCH\b/.test(
-      text,
-    )
-  ) {
-    return false;
-  }
-  return /^(CELULAR\s+)?(REALME|INFINIX|XIAOMI|REDMI|POCO|HONOR)\b/.test(text);
+  return isPhoneDescription(product);
 }
 
 export function parseStockWorkbook(buffer: ArrayBuffer, store: string): StockRow[] {
@@ -73,10 +66,5 @@ export function parseStockWorkbook(buffer: ArrayBuffer, store: string): StockRow
       quantity: numberFrom(row["QUANT."] ?? row.QUANT),
       cost: numberFrom(row["TOTAL CUSTO"]),
     }))
-    .filter(
-      (row) =>
-        row.code &&
-        row.quantity > 0 &&
-        isPhoneProduct(row.product),
-    );
+    .filter((row) => row.code && row.product && row.quantity > 0);
 }

@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import { inferProductCategory } from "./categories";
 
 export type SaleRow = {
   store: string;
@@ -41,12 +42,7 @@ function dateFrom(value: unknown) {
 }
 
 export function inferCategory(product: unknown, code: unknown) {
-  const text = `${product ?? ""} ${code ?? ""}`.toUpperCase();
-  if (text.includes("PELICULA")) return "Películas";
-  if (text.includes("CARREGADOR")) return "Carregadores";
-  if (text.includes("CABO")) return "Cabos";
-  if (text.includes("FONE")) return "Fones de ouvido";
-  return "Celulares";
+  return inferProductCategory(product, code);
 }
 
 export function parseWorkbook(buffer: ArrayBuffer): SaleRow[] {

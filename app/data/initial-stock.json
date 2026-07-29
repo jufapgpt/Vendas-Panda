@@ -3,7 +3,7 @@
     "Light.xlsx",
     "Boa vista.xlsx"
   ],
-  "uploadedAt": "2026-07-29T14:20:39.823Z",
+  "uploadedAt": "2026-07-29T19:16:35.068Z",
   "rows": [
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -25,6 +25,27 @@
       "product": "Celular Realme 14 5G 256GB Storm Titanium 8GB RAM",
       "quantity": 1,
       "cost": 1620.99
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "AMET- PELICULA",
+      "product": "PELICULA MATTE NANOTECH AMET",
+      "quantity": 58,
+      "cost": 737.18
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "AMET- PELICULAA",
+      "product": "PELICULA LISA NANOTECH AMET",
+      "quantity": 49,
+      "cost": 622.79
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "BUDS8LITE-WHITE",
+      "product": "FONE XIAOMI BLUETOOTH REDMI BUDS 8 LITE WHITE",
+      "quantity": 5,
+      "cost": 772.15
     },
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -77,6 +98,76 @@
     },
     {
       "store": "PANDA SHOPPING LIGHT",
+      "code": "CABO2-F7",
+      "product": "CABO TIPO-C HMASTON HB03-3",
+      "quantity": 9,
+      "cost": 126
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "CABO-H884",
+      "product": "CABO USB-C PARA USB-C 2.0 H88-4",
+      "quantity": 9,
+      "cost": 126
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "CARREGADOR-HMASTON-C23",
+      "product": "CARREGADOR PARA CELULAR HMASTON CB-23",
+      "quantity": 10,
+      "cost": 225
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "CARREGADOR-HM-H966",
+      "product": "CARREGADOR PORTATIL H966",
+      "quantity": 8,
+      "cost": 368.8
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "CARREGADOR-USBC-120W",
+      "product": "CARREGADOR USB-TIPO-C 120W",
+      "quantity": 5,
+      "cost": 199.5
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "CARREG-CAR-HM-F7",
+      "product": "CARREGADOR DE CARRO TIPO-C HMASTON S18-3",
+      "quantity": 10,
+      "cost": 250
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "CHOPEIRA-BLACK-F7",
+      "product": "CHOPEIRA PORTATIL PARA LATAS BLACK-F7",
+      "quantity": 5,
+      "cost": 480.65
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "ESPELHO-MAKE-WHITE",
+      "product": "ESPELHO PARA MAQUIAGEM COM LED 2W WHITE-F7",
+      "quantity": 5,
+      "cost": 246.35
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "FONE-LY123",
+      "product": "FONE DE OUVIDO LY-123",
+      "quantity": 9,
+      "cost": 409.5
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "FONE-SN30",
+      "product": "FONE DE OUVIDO SEM FIO BLUETOOTH SN-30",
+      "quantity": 4,
+      "cost": 384
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
       "code": "HONOR7D-5G-256-12-PT -FF7",
       "product": "Celular Honor X7D 5G 256GB Black RAM 12GV- FF7",
       "quantity": 2,
@@ -102,6 +193,27 @@
       "product": "Celular Infinix Hot 60i 256GB Sleek Black RAM 8GB- F7",
       "quantity": 1,
       "cost": 920
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "LAPELA-MK19",
+      "product": "MICROFONE DE LAPELA MK19",
+      "quantity": 5,
+      "cost": 427.5
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "LED-PORTATIL",
+      "product": "LED PORTATIL HMASTON",
+      "quantity": 5,
+      "cost": 225
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "LY-115",
+      "product": "FONE DE OUVIDO BLUETOOTH LY-115",
+      "quantity": 2,
+      "cost": 80
     },
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -182,6 +294,13 @@
     },
     {
       "store": "PANDA SHOPPING LIGHT",
+      "code": "ROBO-S40",
+      "product": "ROBO ASPIRADOR DE PO INTELIGENTE XIAOMI S40 220W BRANCO",
+      "quantity": 2,
+      "cost": 2847.98
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
       "code": "SMART10-128-4-AZ-F7",
       "product": "Infinix Smart 10 128GB 4GB RAM Iris Blue-F7",
       "quantity": 2,
@@ -193,6 +312,27 @@
       "product": "Infinix Smart 10 128GB 4GB RAM Sleek Black-F7",
       "quantity": 5,
       "cost": 3200
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "SUPORTE-CJ71",
+      "product": "SUPORTE CJ-71 HMASTON",
+      "quantity": 5,
+      "cost": 150
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "TABLET-PAD2-128-4-CZ-FF7",
+      "product": "TABLET XIAOMI REDMI PAD 2 4GB RAM 128GB CINZA-- FF7",
+      "quantity": 2,
+      "cost": 0
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "WATCH5-ACTIVE-PT",
+      "product": "SMARTWATCH XIAOMI REDMI WATCH 5 ACTIVE BLACK",
+      "quantity": 5,
+      "cost": 1270.35
     },
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -221,6 +361,27 @@
       "product": "Celular Realme 14 5G 256GB Storm Titanium 8GB RAM",
       "quantity": 2,
       "cost": 3241.98
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "AMET- PELICULA",
+      "product": "PELICULA MATTE NANOTECH AMET",
+      "quantity": 54,
+      "cost": 686.34
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "AMET- PELICULAA",
+      "product": "PELICULA LISA NANOTECH AMET",
+      "quantity": 48,
+      "cost": 610.08
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "BUDS8LITE-WHITE",
+      "product": "FONE XIAOMI BLUETOOTH REDMI BUDS 8 LITE WHITE",
+      "quantity": 5,
+      "cost": 772.15
     },
     {
       "store": "PANDA BOA VISTA",
@@ -287,6 +448,83 @@
     },
     {
       "store": "PANDA BOA VISTA",
+      "code": "CABO2-F7",
+      "product": "CABO TIPO-C HMASTON HB03-3",
+      "quantity": 9,
+      "cost": 126
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "CABO-H884",
+      "product": "CABO USB-C PARA USB-C 2.0 H88-4",
+      "quantity": 10,
+      "cost": 140
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "CARREGADOR-HMASTON-C23",
+      "product": "CARREGADOR PARA CELULAR HMASTON CB-23",
+      "quantity": 10,
+      "cost": 225
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "CARREGADOR-HM-H966",
+      "product": "CARREGADOR PORTATIL H966",
+      "quantity": 10,
+      "cost": 461
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "CARREGADOR-USBC-120W",
+      "product": "CARREGADOR USB-TIPO-C 120W",
+      "quantity": 5,
+      "cost": 199.5
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "CARREG-CAR-HM-F7",
+      "product": "CARREGADOR DE CARRO TIPO-C HMASTON S18-3",
+      "quantity": 10,
+      "cost": 250
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "CHOPEIRA-BLACK-F7",
+      "product": "CHOPEIRA PORTATIL PARA LATAS BLACK-F7",
+      "quantity": 5,
+      "cost": 480.65
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "ESPELHO-MAKE-WHITE",
+      "product": "ESPELHO PARA MAQUIAGEM COM LED 2W WHITE-F7",
+      "quantity": 5,
+      "cost": 246.35
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "FONE-LY123",
+      "product": "FONE DE OUVIDO LY-123",
+      "quantity": 8,
+      "cost": 364
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "FONE-SN30",
+      "product": "FONE DE OUVIDO SEM FIO BLUETOOTH SN-30",
+      "quantity": 4,
+      "cost": 384
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "FOSCA",
+      "product": "PELICULA fosca",
+      "quantity": 1,
+      "cost": 0
+    },
+    {
+      "store": "PANDA BOA VISTA",
       "code": "HONOR7D-5G-256-12-PT -FF7",
       "product": "Celular Honor X7D 5G 256GB Black RAM 12GV- FF7",
       "quantity": 2,
@@ -305,6 +543,27 @@
       "product": "Celular Infinix Hot 60i 256GB Titanium Silver RAM 8GB- F7",
       "quantity": 2,
       "cost": 1840
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "LAPELA-MK19",
+      "product": "MICROFONE DE LAPELA MK19",
+      "quantity": 5,
+      "cost": 427.5
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "LED-PORTATIL",
+      "product": "LED PORTATIL HMASTON",
+      "quantity": 5,
+      "cost": 225
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "LY-115",
+      "product": "FONE DE OUVIDO BLUETOOTH LY-115",
+      "quantity": 3,
+      "cost": 120
     },
     {
       "store": "PANDA BOA VISTA",
@@ -392,6 +651,13 @@
     },
     {
       "store": "PANDA BOA VISTA",
+      "code": "ROBO-S40",
+      "product": "ROBO ASPIRADOR DE PO INTELIGENTE XIAOMI S40 220W BRANCO",
+      "quantity": 2,
+      "cost": 2847.98
+    },
+    {
+      "store": "PANDA BOA VISTA",
       "code": "SMART10-128-4-AZ-F7",
       "product": "Infinix Smart 10 128GB 4GB RAM Iris Blue-F7",
       "quantity": 2,
@@ -409,6 +675,27 @@
       "code": "SMART10-256GB-4GB-PT",
       "product": "Infinix Smart 10 256GB 4GB RAM Sleek Black",
       "quantity": 1,
+      "cost": 0
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "SUPORTE-CJ71",
+      "product": "SUPORTE CJ-71 HMASTON",
+      "quantity": 5,
+      "cost": 150
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "TABLET-PAD2-128-4-CZ-FF7",
+      "product": "TABLET XIAOMI REDMI PAD 2 4GB RAM 128GB CINZA-- FF7",
+      "quantity": 2,
+      "cost": 0
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "WHATCH5-ACTIVE-PT",
+      "product": "Smartwatch Xiaomi Redmi Whatch 5 Active - PRETO",
+      "quantity": 5,
       "cost": 0
     },
     {

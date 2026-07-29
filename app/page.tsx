@@ -10,6 +10,12 @@ import {
 import initialSales from "./data/initial-sales.json";
 import initialStock from "./data/initial-stock.json";
 import type { SaleRow } from "../lib/sales";
+import {
+  CATEGORY_COLORS,
+  PRODUCT_CATEGORIES,
+  inferProductCategory,
+  type ProductCategory,
+} from "../lib/categories";
 import { isPhoneProduct, phoneModelName, type StockRow } from "../lib/stock";
 
 type Dataset = {
@@ -124,15 +130,18 @@ function analyzeRows(rows: SaleRow[]) {
       ly115.units += sign * row.quantity;
       ly115.profit += sign * (row.total - row.cost);
     }
-    addMetric(categories, row.category, row);
+    const category = inferProductCategory(row.product, row.code);
+    addMetric(categories, category, row);
     addMetric(stores, row.store, row);
-    if (row.category === "Celulares") {
+    if (category === "Celulares") {
       addMetric(phones, phoneModelName(row.product), row);
     }
   }
 
-  const categoryList = [...categories.entries()]
-    .map(([name, values]) => ({ name, ...values }))
+  const categoryList = PRODUCT_CATEGORIES.map((name) => ({
+    name,
+    ...(categories.get(name) ?? { revenue: 0, units: 0, profit: 0 }),
+  }))
     .sort((a, b) => b.revenue - a.revenue);
   const storeList = [...stores.entries()]
     .map(([name, values]) => ({ name, ...values }))
@@ -423,6 +432,65 @@ function DailySalesChart({
   );
 }
 
+type CategorySlice = {
+  name: ProductCategory;
+  value: number;
+};
+
+function CategoryPie({
+  data,
+  formatValue,
+  totalLabel,
+}: {
+  data: CategorySlice[];
+  formatValue: (value: number) => string;
+  totalLabel: string;
+}) {
+  const total = data.reduce((sum, item) => sum + Math.max(item.value, 0), 0);
+  let cursor = 0;
+  const segments = data.map((item) => {
+    const start = cursor;
+    cursor += total ? (Math.max(item.value, 0) / total) * 100 : 0;
+    return `${CATEGORY_COLORS[item.name]} ${start}% ${cursor}%`;
+  });
+  const background = total
+    ? `conic-gradient(${segments.join(", ")})`
+    : "#eef1f5";
+
+  return (
+    <div className="category-pie-body">
+      <div
+        className="category-pie"
+        style={{ background }}
+        role="img"
+        aria-label={data
+          .map(
+            (item) =>
+              `${item.name}: ${formatValue(item.value)}, ${
+                total ? percent.format(item.value / total) : "0%"
+              }`,
+          )
+          .join(". ")}
+      >
+        <div>
+          <strong>{formatValue(total)}</strong>
+          <span>{totalLabel}</span>
+        </div>
+      </div>
+      <div className="category-pie-legend">
+        {data.map((item) => (
+          <div key={item.name}>
+            <i style={{ background: CATEGORY_COLORS[item.name] }} aria-hidden="true" />
+            <span>{item.name}</span>
+            <strong>{formatValue(item.value)}</strong>
+            <small>{total ? percent.format(item.value / total) : "0%"}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [dataset, setDataset] = useState<Dataset>(initialSales as Dataset);
   const [stockDataset, setStockDataset] = useState<StockDataset>(
@@ -448,7 +516,10 @@ export default function Home() {
       .then((payload) => {
         if (!active) return;
         if (payload.rows?.length) setDataset(payload as Dataset);
-        if (payload.stockRows?.length) {
+        if (
+          payload.stockRows?.length &&
+          payload.stockRows.some((row: StockRow) => !isPhoneProduct(row.product))
+        ) {
           setStockDataset({
             sourceFiles: payload.stockSourceFiles,
             uploadedAt: payload.stockUploadedAt,
@@ -471,6 +542,21 @@ export default function Home() {
     [stockDataset.rows, storeFilter],
   );
   const analysis = useMemo(() => analyzeRows(filteredSalesRows), [filteredSalesRows]);
+  const stockCategories = useMemo(
+    () =>
+      PRODUCT_CATEGORIES.map((name) => ({
+        name,
+        value: filteredStockRows.reduce(
+          (sum, row) =>
+            sum +
+            (inferProductCategory(row.product, row.code) === name
+              ? row.quantity
+              : 0),
+          0,
+        ),
+      })),
+    [filteredStockRows],
+  );
   const stockAnalysis = useMemo(
     () => analyzeStock(filteredStockRows, filteredSalesRows),
     [filteredStockRows, filteredSalesRows],
@@ -537,7 +623,7 @@ export default function Home() {
             (sum: number, row: StockRow) => sum + row.quantity,
             0,
           ),
-        )} celulares.`,
+        )} itens.`,
       );
     } catch (error) {
       setStockUploadState("error");
@@ -663,22 +749,40 @@ export default function Home() {
                 <span>100% do período</span>
               </div>
               <div className="stacked-bar" aria-label="Participação por categoria">
-                {analysis.categories.map((category, index) => (
+                {analysis.categories.map((category) => (
                   <span
-                    className={`category-tone tone-${Math.min(index + 1, 5)}`}
-                    style={{ width: `${Math.max((category.revenue / analysis.revenue) * 100, 0.45)}%` }}
+                    className="category-tone"
+                    style={{
+                      background: CATEGORY_COLORS[category.name],
+                      width: `${
+                        analysis.revenue > 0 && category.revenue > 0
+                          ? Math.max(
+                              (category.revenue / analysis.revenue) * 100,
+                              0.45,
+                            )
+                          : 0
+                      }%`,
+                    }}
                     key={category.name}
                     title={`${category.name}: ${money.format(category.revenue)}`}
                   />
                 ))}
               </div>
               <div className="category-list">
-                {analysis.categories.map((category, index) => (
+                {analysis.categories.map((category) => (
                   <div key={category.name}>
-                    <span className={`legend-dot tone-${Math.min(index + 1, 5)}`} />
+                    <span
+                      className="legend-dot"
+                      style={{ background: CATEGORY_COLORS[category.name] }}
+                    />
                     <div>
                       <p>{category.name}</p>
-                      <small>{percent.format(category.revenue / analysis.revenue)} da receita</small>
+                      <small>
+                        {analysis.revenue
+                          ? percent.format(category.revenue / analysis.revenue)
+                          : "0%"}{" "}
+                        da receita
+                      </small>
                     </div>
                     <strong>{money.format(category.revenue)}</strong>
                   </div>
@@ -986,6 +1090,41 @@ export default function Home() {
           <div className="stock-source">
             Fontes: {stockDataset.sourceFiles.join(" · ")}
           </div>
+        </section>
+
+        <section className="category-pies-grid" aria-label="Vendas e estoque por categoria">
+          <article className="panel category-pie-panel">
+            <div className="panel-header">
+              <div>
+                <h2>Vendas por categoria</h2>
+                <p>Participação na receita líquida do período</p>
+              </div>
+              <span>{storeFilter === "all" ? "Todas as lojas" : "Loja selecionada"}</span>
+            </div>
+            <CategoryPie
+              data={analysis.categories.map((item) => ({
+                name: item.name,
+                value: item.revenue,
+              }))}
+              formatValue={(value) => money.format(value)}
+              totalLabel="receita líquida"
+            />
+          </article>
+
+          <article className="panel category-pie-panel">
+            <div className="panel-header">
+              <div>
+                <h2>Estoque por categoria</h2>
+                <p>Participação nas unidades disponíveis</p>
+              </div>
+              <span>{storeFilter === "all" ? "Todas as lojas" : "Loja selecionada"}</span>
+            </div>
+            <CategoryPie
+              data={stockCategories}
+              formatValue={(value) => integer.format(value)}
+              totalLabel="itens em estoque"
+            />
+          </article>
         </section>
 
         <footer>
