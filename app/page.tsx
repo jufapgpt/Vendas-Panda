@@ -162,37 +162,99 @@ function analyzeRows(rows: SaleRow[]) {
   };
 }
 
-function analyzeStock(rows: StockRow[], soldPhones: ReturnType<typeof analyzeRows>["phones"]) {
-  const models = new Map<
+function stockKey(code: string) {
+  return code.trim().toUpperCase().replace(/\s+/g, "");
+}
+
+function analyzeStock(rows: StockRow[], salesRows: SaleRow[]) {
+  const variants = new Map<
     string,
-    { light: number; boaVista: number; total: number; cost: number }
+    {
+      code: string;
+      description: string;
+      light: number;
+      boaVista: number;
+      total: number;
+      cost: number;
+    }
   >();
   for (const row of rows) {
     if (!isPhoneProduct(row.product)) continue;
-    const model = phoneModelName(row.product);
-    const current = models.get(model) ?? { light: 0, boaVista: 0, total: 0, cost: 0 };
+    const key = stockKey(row.code);
+    const current = variants.get(key) ?? {
+      code: row.code.trim(),
+      description: row.product.trim(),
+      light: 0,
+      boaVista: 0,
+      total: 0,
+      cost: 0,
+    };
+    if (row.product.trim().length > current.description.length) {
+      current.description = row.product.trim();
+    }
     if (row.store.includes("SHOPPING LIGHT")) current.light += row.quantity;
     if (row.store.includes("BOA VISTA")) current.boaVista += row.quantity;
     current.total += row.quantity;
     current.cost += row.cost;
-    models.set(model, current);
+    variants.set(key, current);
   }
 
-  const soldByModel = new Map(soldPhones.map((phone) => [phone.name, phone.units]));
-  const allModels = new Set([...models.keys(), ...soldByModel.keys()]);
-  const comparison = [...allModels]
-    .map((model) => {
-      const stock = models.get(model) ?? { light: 0, boaVista: 0, total: 0, cost: 0 };
-      const sold = soldByModel.get(model) ?? 0;
+  const soldByVariant = new Map<
+    string,
+    { code: string; description: string; sold: number }
+  >();
+  for (const row of salesRows) {
+    if (!isPhoneProduct(row.product)) continue;
+    const key = stockKey(row.code);
+    const current = soldByVariant.get(key) ?? {
+      code: row.code.trim(),
+      description: row.product.trim(),
+      sold: 0,
+    };
+    if (row.product.trim().length > current.description.length) {
+      current.description = row.product.trim();
+    }
+    current.sold += signFor(row) * row.quantity;
+    soldByVariant.set(key, current);
+  }
+
+  const allVariants = new Set([...variants.keys(), ...soldByVariant.keys()]);
+  const comparison = [...allVariants]
+    .map((key) => {
+      const stock = variants.get(key) ?? {
+        code: "",
+        description: "",
+        light: 0,
+        boaVista: 0,
+        total: 0,
+        cost: 0,
+      };
+      const sale = soldByVariant.get(key);
+      const sold = sale?.sold ?? 0;
       const coverage = sold > 0 ? stock.total / sold : null;
       let status = "Sem venda";
       if (sold > 0 && stock.total === 0) status = "Sem estoque";
       else if (sold > 0 && stock.total < sold) status = "Crítico";
       else if (sold > 0 && stock.total < sold * 2) status = "Atenção";
       else if (sold > 0) status = "Coberto";
-      return { model, sold, coverage, status, ...stock };
+      return {
+        code: stock.code || sale?.code || "",
+        description: stock.description || sale?.description || "",
+        sold,
+        coverage,
+        status,
+        light: stock.light,
+        boaVista: stock.boaVista,
+        total: stock.total,
+        cost: stock.cost,
+      };
     })
-    .sort((a, b) => b.sold - a.sold || b.total - a.total || a.model.localeCompare(b.model));
+    .sort(
+      (a, b) =>
+        b.sold - a.sold ||
+        b.total - a.total ||
+        a.description.localeCompare(b.description),
+    );
 
   return {
     comparison,
@@ -373,8 +435,8 @@ export default function Home() {
 
   const analysis = useMemo(() => analyzeRows(dataset.rows), [dataset.rows]);
   const stockAnalysis = useMemo(
-    () => analyzeStock(stockDataset.rows, analysis.phones),
-    [stockDataset.rows, analysis.phones],
+    () => analyzeStock(stockDataset.rows, dataset.rows),
+    [stockDataset.rows, dataset.rows],
   );
   const storeMax = Math.max(...analysis.stores.map((item) => item.revenue), 1);
   const phoneMax = Math.max(...analysis.phones.map((item) => item.revenue), 1);
@@ -652,7 +714,7 @@ export default function Home() {
             <div>
               <h2>Estoque de celulares × vendas</h2>
               <p>
-                Estoque atual por loja comparado às unidades líquidas vendidas no período
+                Estoque atual por loja comparado às vendas de cada versão/SKU
               </p>
             </div>
             <div className="stock-actions">
@@ -703,15 +765,19 @@ export default function Home() {
               <small>celulares</small>
             </div>
             <div className={stockAnalysis.riskModels ? "summary-risk" : ""}>
-              <span>Modelos críticos</span>
+              <span>Versões críticas</span>
               <strong>{integer.format(stockAnalysis.riskModels)}</strong>
               <small>sem estoque ou abaixo das vendas</small>
             </div>
           </div>
 
-          <div className="stock-table" role="table" aria-label="Estoque e vendas por modelo">
+          <div
+            className="stock-table"
+            role="table"
+            aria-label="Estoque e vendas por versão de celular"
+          >
             <div className="stock-table-head" role="row">
-              <span>Modelo</span>
+              <span>Descrição completa</span>
               <span>Vendidos</span>
               <span>Light</span>
               <span>Boa Vista</span>
@@ -720,8 +786,15 @@ export default function Home() {
               <span>Situação</span>
             </div>
             {stockAnalysis.comparison.map((item) => (
-              <div className="stock-table-row" role="row" key={item.model}>
-                <strong>{item.model}</strong>
+              <div
+                className="stock-table-row"
+                role="row"
+                key={`${item.code}-${item.description}`}
+              >
+                <div className="stock-product">
+                  <strong>{item.description}</strong>
+                  <small>{item.code}</small>
+                </div>
                 <span>{integer.format(item.sold)}</span>
                 <span>{integer.format(item.light)}</span>
                 <span>{integer.format(item.boaVista)}</span>
