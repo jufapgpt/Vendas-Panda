@@ -139,6 +139,46 @@ input:focus-visible {
   gap: 24px;
 }
 
+.heading-controls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.store-filter {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #eef1f6;
+}
+
+.store-filter button {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.store-filter button:hover {
+  color: var(--ink);
+}
+
+.store-filter button.active {
+  background: var(--surface);
+  color: var(--blue);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
+}
+
 .eyebrow {
   margin: 0 0 7px !important;
   color: var(--blue) !important;
@@ -753,6 +793,10 @@ input:focus-visible {
   color: #b42318;
 }
 
+.stock-summary.filtered {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .stock-table {
   width: 100%;
 }
@@ -768,6 +812,15 @@ input:focus-visible {
   align-items: center;
   gap: 14px;
   padding: 0 24px;
+}
+
+.stock-table.single-store .stock-table-head,
+.stock-table.single-store .stock-table-row {
+  grid-template-columns:
+    minmax(360px, 2.4fr)
+    repeat(3, minmax(66px, 0.48fr))
+    minmax(100px, 0.7fr)
+    minmax(100px, 0.72fr);
 }
 
 .stock-table-head {
@@ -804,7 +857,7 @@ input:focus-visible {
 
 .stock-table-head > span:not(:first-child),
 .stock-table-row > span:not(:first-child),
-.stock-table-row > strong:nth-child(5) {
+.stock-table-row > strong {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -901,6 +954,11 @@ footer {
   .stock-table-row {
     min-width: 1080px;
   }
+
+  .stock-table.single-store .stock-table-head,
+  .stock-table.single-store .stock-table-row {
+    min-width: 960px;
+  }
 }
 
 @media (max-width: 680px) {
@@ -933,6 +991,21 @@ footer {
   .page-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .heading-controls {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .store-filter {
+    width: 100%;
+  }
+
+  .store-filter button {
+    flex: 1;
   }
 
   .kpi-strip {
@@ -973,7 +1046,8 @@ footer {
     flex-direction: column;
   }
 
-  .stock-summary {
+  .stock-summary,
+  .stock-summary.filtered {
     grid-template-columns: 1fr;
   }
 

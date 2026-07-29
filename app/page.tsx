@@ -24,6 +24,8 @@ type StockDataset = {
   rows: StockRow[];
 };
 
+type StoreFilter = "all" | "light" | "boa-vista";
+
 type DailyPoint = {
   date: string;
   label: string;
@@ -43,6 +45,14 @@ const percent = new Intl.NumberFormat("pt-BR", {
 
 function signFor(row: SaleRow) {
   return row.type.includes("devol") ? -1 : 1;
+}
+
+function matchesStore(store: string, filter: StoreFilter) {
+  if (filter === "all") return true;
+  const normalized = store.toUpperCase();
+  return filter === "light"
+    ? normalized.includes("SHOPPING LIGHT")
+    : normalized.includes("BOA VISTA");
 }
 
 function addMetric<K extends string>(
@@ -401,6 +411,7 @@ export default function Home() {
   const [stockDataset, setStockDataset] = useState<StockDataset>(
     initialStock as StockDataset,
   );
+  const [storeFilter, setStoreFilter] = useState<StoreFilter>("all");
   const [uploadState, setUploadState] = useState<
     "idle" | "uploading" | "success" | "error"
   >("idle");
@@ -433,10 +444,18 @@ export default function Home() {
     };
   }, []);
 
-  const analysis = useMemo(() => analyzeRows(dataset.rows), [dataset.rows]);
+  const filteredSalesRows = useMemo(
+    () => dataset.rows.filter((row) => matchesStore(row.store, storeFilter)),
+    [dataset.rows, storeFilter],
+  );
+  const filteredStockRows = useMemo(
+    () => stockDataset.rows.filter((row) => matchesStore(row.store, storeFilter)),
+    [stockDataset.rows, storeFilter],
+  );
+  const analysis = useMemo(() => analyzeRows(filteredSalesRows), [filteredSalesRows]);
   const stockAnalysis = useMemo(
-    () => analyzeStock(stockDataset.rows, dataset.rows),
-    [stockDataset.rows, dataset.rows],
+    () => analyzeStock(filteredStockRows, filteredSalesRows),
+    [filteredStockRows, filteredSalesRows],
   );
   const storeMax = Math.max(...analysis.stores.map((item) => item.revenue), 1);
   const phoneMax = Math.max(...analysis.phones.map((item) => item.revenue), 1);
@@ -543,11 +562,37 @@ export default function Home() {
           <div>
             <p className="eyebrow">Performance comercial</p>
             <h1>Visão de Vendas</h1>
-            <p>{formatDateRange(analysis.minDate, analysis.maxDate)} · Todas as lojas</p>
+            <p>
+              {formatDateRange(analysis.minDate, analysis.maxDate)} ·{" "}
+              {storeFilter === "all"
+                ? "Todas as lojas"
+                : storeFilter === "light"
+                  ? "Shopping Light"
+                  : "Boa Vista"}
+            </p>
           </div>
-          <div className={`data-status ${uploadState}`}>
-            <span aria-hidden="true" />
-            {uploadState === "error" ? "Importação pendente" : "Base processada"}
+          <div className="heading-controls">
+            <div className="store-filter" role="group" aria-label="Filtrar por loja">
+              {[
+                ["all", "Lojas"],
+                ["light", "Light"],
+                ["boa-vista", "Boavista"],
+              ].map(([value, label]) => (
+                <button
+                  type="button"
+                  className={storeFilter === value ? "active" : ""}
+                  aria-pressed={storeFilter === value}
+                  onClick={() => setStoreFilter(value as StoreFilter)}
+                  key={value}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className={`data-status ${uploadState}`}>
+              <span aria-hidden="true" />
+              {uploadState === "error" ? "Importação pendente" : "Base processada"}
+            </div>
           </div>
         </section>
 
@@ -659,7 +704,10 @@ export default function Home() {
             <article className="payment-card">
               <div>
                 <h2>Tipo de pagamento</h2>
-                <p>Campo preenchido em {analysis.paymentFilled} de {dataset.rows.length} registros</p>
+                <p>
+                  Campo preenchido em {analysis.paymentFilled} de{" "}
+                  {filteredSalesRows.length} registros
+                </p>
               </div>
               <strong>{analysis.paymentFilled ? "Parcial" : "Não informado"}</strong>
             </article>
@@ -756,22 +804,29 @@ export default function Home() {
             </div>
           )}
 
-          <div className="stock-summary" aria-label="Resumo do estoque de celulares">
+          <div
+            className={`stock-summary ${storeFilter === "all" ? "" : "filtered"}`}
+            aria-label="Resumo do estoque de celulares"
+          >
             <div>
               <span>Estoque total</span>
               <strong>{integer.format(stockAnalysis.total)}</strong>
               <small>celulares</small>
             </div>
-            <div>
-              <span>Shopping Light</span>
-              <strong>{integer.format(stockAnalysis.light)}</strong>
-              <small>celulares</small>
-            </div>
-            <div>
-              <span>Boa Vista</span>
-              <strong>{integer.format(stockAnalysis.boaVista)}</strong>
-              <small>celulares</small>
-            </div>
+            {(storeFilter === "all" || storeFilter === "light") && (
+              <div>
+                <span>Shopping Light</span>
+                <strong>{integer.format(stockAnalysis.light)}</strong>
+                <small>celulares</small>
+              </div>
+            )}
+            {(storeFilter === "all" || storeFilter === "boa-vista") && (
+              <div>
+                <span>Boa Vista</span>
+                <strong>{integer.format(stockAnalysis.boaVista)}</strong>
+                <small>celulares</small>
+              </div>
+            )}
             <div className={stockAnalysis.riskModels ? "summary-risk" : ""}>
               <span>Versões críticas</span>
               <strong>{integer.format(stockAnalysis.riskModels)}</strong>
@@ -780,15 +835,21 @@ export default function Home() {
           </div>
 
           <div
-            className="stock-table"
+            className={`stock-table ${storeFilter === "all" ? "" : "single-store"}`}
             role="table"
             aria-label="Estoque e vendas por versão de celular"
           >
             <div className="stock-table-head" role="row">
               <span>Descrição completa</span>
               <span>Vendidos</span>
-              <span>Light</span>
-              <span>Boa Vista</span>
+              {storeFilter === "all" ? (
+                <>
+                  <span>Light</span>
+                  <span>Boa Vista</span>
+                </>
+              ) : (
+                <span>{storeFilter === "light" ? "Light" : "Boa Vista"}</span>
+              )}
               <span>Estoque</span>
               <span>Estoque ÷ venda</span>
               <span>Situação</span>
@@ -804,8 +865,18 @@ export default function Home() {
                   <small>{item.code}</small>
                 </div>
                 <span>{integer.format(item.sold)}</span>
-                <span>{integer.format(item.light)}</span>
-                <span>{integer.format(item.boaVista)}</span>
+                {storeFilter === "all" ? (
+                  <>
+                    <span>{integer.format(item.light)}</span>
+                    <span>{integer.format(item.boaVista)}</span>
+                  </>
+                ) : (
+                  <span>
+                    {integer.format(
+                      storeFilter === "light" ? item.light : item.boaVista,
+                    )}
+                  </span>
+                )}
                 <strong>{integer.format(item.total)}</strong>
                 <span>
                   {item.coverage === null
@@ -834,7 +905,7 @@ export default function Home() {
 
         <footer>
           <span>Fonte atual: {dataset.sourceFile}</span>
-          <span>{dataset.rows.length} registros processados</span>
+          <span>{filteredSalesRows.length} registros na visão selecionada</span>
         </footer>
       </div>
     </main>
