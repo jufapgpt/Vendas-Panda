@@ -694,6 +694,7 @@ export default function Home() {
               <span>Participação</span>
               <span>Itens</span>
               <span>Receita líquida</span>
+              <span>Margem %</span>
             </div>
             {analysis.phones.map((phone, index) => (
               <div className="ranking-row" role="row" key={phone.name}>
@@ -704,6 +705,13 @@ export default function Home() {
                 </div>
                 <span>{integer.format(phone.units)}</span>
                 <strong>{money.format(phone.revenue)}</strong>
+                <strong
+                  className={
+                    phone.profit < 0 ? "ranking-margin negative" : "ranking-margin"
+                  }
+                >
+                  {phone.revenue ? percent.format(phone.profit / phone.revenue) : "—"}
+                </strong>
               </div>
             ))}
           </div>

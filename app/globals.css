@@ -594,7 +594,13 @@ input:focus-visible {
 .ranking-head,
 .ranking-row {
   display: grid;
-  grid-template-columns: 48px minmax(220px, 1.5fr) minmax(140px, 1fr) 80px minmax(130px, 0.7fr);
+  grid-template-columns:
+    48px
+    minmax(220px, 1.5fr)
+    minmax(140px, 1fr)
+    70px
+    minmax(130px, 0.7fr)
+    90px;
   align-items: center;
   gap: 18px;
   padding: 0 24px;
@@ -621,11 +627,21 @@ input:focus-visible {
 }
 
 .ranking-row > span:nth-child(4),
-.ranking-row > strong:last-child,
+.ranking-row > strong:nth-child(5),
+.ranking-row > strong:nth-child(6),
 .ranking-head > span:nth-child(4),
-.ranking-head > span:last-child {
+.ranking-head > span:nth-child(5),
+.ranking-head > span:nth-child(6) {
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+
+.ranking-margin {
+  color: #067647;
+}
+
+.ranking-margin.negative {
+  color: #b42318;
 }
 
 .microbar {
@@ -856,7 +872,13 @@ footer {
 
   .ranking-head,
   .ranking-row {
-    grid-template-columns: 38px minmax(180px, 1.5fr) minmax(100px, 1fr) 65px minmax(110px, 0.8fr);
+    grid-template-columns:
+      38px
+      minmax(180px, 1.5fr)
+      minmax(100px, 1fr)
+      60px
+      minmax(110px, 0.8fr)
+      80px;
   }
 
   .stock-summary {
@@ -971,7 +993,7 @@ footer {
 
   .ranking-head,
   .ranking-row {
-    min-width: 720px;
+    min-width: 820px;
   }
 
   footer {
