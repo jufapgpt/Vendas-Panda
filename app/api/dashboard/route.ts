@@ -5,11 +5,13 @@ import { salesBatches, salesRows } from "../../../db/schema";
 export async function GET() {
   try {
     const db = getDb();
-    const [batch] = await db
-      .select()
+    const [latest] = await db
+      .select({ batch: salesBatches })
       .from(salesBatches)
+      .innerJoin(salesRows, eq(salesRows.batchId, salesBatches.id))
       .orderBy(desc(salesBatches.uploadedAt), desc(salesBatches.id))
       .limit(1);
+    const batch = latest?.batch;
 
     if (!batch) {
       return Response.json({ rows: null });

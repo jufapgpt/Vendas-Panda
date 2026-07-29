@@ -1,10 +1,14 @@
 import { env } from "cloudflare:workers";
+import { eq } from "drizzle-orm";
 import { getDb } from "../../../db";
 import { salesBatches, salesRows } from "../../../db/schema";
 import { parseWorkbook } from "../../../lib/sales";
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 const ALLOWED_EXTENSIONS = [".xlsx", ".xls", ".csv"];
+// D1 accepts at most 100 bound parameters per query. Each sales row binds
+// 15 values, so five rows keep every insert safely below that limit.
+const D1_INSERT_CHUNK_SIZE = 5;
 
 export async function POST(request: Request) {
   try {
@@ -58,27 +62,33 @@ export async function POST(request: Request) {
       })
       .returning();
 
-    for (let index = 0; index < rows.length; index += 35) {
-      const chunk = rows.slice(index, index + 35);
-      await db.insert(salesRows).values(
-        chunk.map((row) => ({
-          batchId: batch.id,
-          store: row.store,
-          saleDate: row.date,
-          orderCode: row.order,
-          productCode: row.code,
-          product: row.product,
-          category: row.category,
-          type: row.type,
-          quantity: row.quantity,
-          unitPrice: row.unitPrice,
-          total: row.total,
-          cost: row.cost,
-          seller: row.seller,
-          payment: row.payment,
-          priceType: row.priceType,
-        })),
-      );
+    try {
+      for (let index = 0; index < rows.length; index += D1_INSERT_CHUNK_SIZE) {
+        const chunk = rows.slice(index, index + D1_INSERT_CHUNK_SIZE);
+        await db.insert(salesRows).values(
+          chunk.map((row) => ({
+            batchId: batch.id,
+            store: row.store,
+            saleDate: row.date,
+            orderCode: row.order,
+            productCode: row.code,
+            product: row.product,
+            category: row.category,
+            type: row.type,
+            quantity: row.quantity,
+            unitPrice: row.unitPrice,
+            total: row.total,
+            cost: row.cost,
+            seller: row.seller,
+            payment: row.payment,
+            priceType: row.priceType,
+          })),
+        );
+      }
+    } catch (error) {
+      await db.delete(salesBatches).where(eq(salesBatches.id, batch.id));
+      await runtime.UPLOADS.delete(objectKey);
+      throw error;
     }
 
     return Response.json({
@@ -87,8 +97,13 @@ export async function POST(request: Request) {
       rows,
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Não foi possível importar a planilha.";
-    return Response.json({ error: message }, { status: 500 });
+    console.error("Sales spreadsheet import failed", error);
+    return Response.json(
+      {
+        error:
+          "Não foi possível atualizar os dados agora. Tente novamente em alguns instantes.",
+      },
+      { status: 500 },
+    );
   }
 }
