@@ -757,6 +757,45 @@ input:focus-visible {
   color: #067647;
 }
 
+.stock-search-bar {
+  padding: 16px 24px;
+  display: grid;
+  grid-template-columns: auto minmax(260px, 520px) 1fr;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #fafbfc;
+}
+
+.stock-search-bar label {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stock-search-bar input {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid #cad3e4;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.stock-search-bar input::placeholder {
+  color: #98a2b3;
+}
+
+.stock-search-bar > span {
+  justify-self: end;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
 .stock-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -871,6 +910,14 @@ input:focus-visible {
   font-size: 10px;
   font-weight: 800;
   white-space: nowrap;
+}
+
+.stock-empty {
+  padding: 34px 24px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
 }
 
 .status-sem-estoque,
@@ -1044,6 +1091,14 @@ footer {
     width: 100%;
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .stock-search-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-search-bar > span {
+    justify-self: start;
   }
 
   .stock-summary,

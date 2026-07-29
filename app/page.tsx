@@ -55,6 +55,14 @@ function matchesStore(store: string, filter: StoreFilter) {
     : normalized.includes("BOA VISTA");
 }
 
+function normalizeSearch(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
 function addMetric<K extends string>(
   map: Map<K, { revenue: number; units: number; profit: number }>,
   key: K,
@@ -412,6 +420,7 @@ export default function Home() {
     initialStock as StockDataset,
   );
   const [storeFilter, setStoreFilter] = useState<StoreFilter>("all");
+  const [stockSearch, setStockSearch] = useState("");
   const [uploadState, setUploadState] = useState<
     "idle" | "uploading" | "success" | "error"
   >("idle");
@@ -457,6 +466,13 @@ export default function Home() {
     () => analyzeStock(filteredStockRows, filteredSalesRows),
     [filteredStockRows, filteredSalesRows],
   );
+  const visibleStockItems = useMemo(() => {
+    const query = normalizeSearch(stockSearch);
+    if (!query) return stockAnalysis.comparison;
+    return stockAnalysis.comparison.filter((item) =>
+      normalizeSearch(`${item.description} ${item.code}`).includes(query),
+    );
+  }, [stockAnalysis.comparison, stockSearch]);
   const storeMax = Math.max(...analysis.stores.map((item) => item.revenue), 1);
   const phoneMax = Math.max(...analysis.phones.map((item) => item.revenue), 1);
 
@@ -804,6 +820,22 @@ export default function Home() {
             </div>
           )}
 
+          <div className="stock-search-bar">
+            <label htmlFor="stock-description-search">Filtrar descrição</label>
+            <input
+              id="stock-description-search"
+              type="search"
+              value={stockSearch}
+              onChange={(event) => setStockSearch(event.target.value)}
+              placeholder="Digite modelo, memória, cor ou código"
+              autoComplete="off"
+            />
+            <span aria-live="polite">
+              {integer.format(visibleStockItems.length)}{" "}
+              {visibleStockItems.length === 1 ? "versão encontrada" : "versões encontradas"}
+            </span>
+          </div>
+
           <div
             className={`stock-summary ${storeFilter === "all" ? "" : "filtered"}`}
             aria-label="Resumo do estoque de celulares"
@@ -854,7 +886,7 @@ export default function Home() {
               <span>Estoque ÷ venda</span>
               <span>Situação</span>
             </div>
-            {stockAnalysis.comparison.map((item) => (
+            {visibleStockItems.map((item) => (
               <div
                 className="stock-table-row"
                 role="row"
@@ -897,6 +929,11 @@ export default function Home() {
                 </span>
               </div>
             ))}
+            {!visibleStockItems.length && (
+              <div className="stock-empty" role="status">
+                Nenhum celular encontrado para “{stockSearch}”.
+              </div>
+            )}
           </div>
           <div className="stock-source">
             Fontes: {stockDataset.sourceFiles.join(" · ")}
