@@ -8,12 +8,20 @@ import {
   useState,
 } from "react";
 import initialSales from "./data/initial-sales.json";
+import initialStock from "./data/initial-stock.json";
 import type { SaleRow } from "../lib/sales";
+import { phoneModelName, type StockRow } from "../lib/stock";
 
 type Dataset = {
   sourceFile: string;
   uploadedAt: string;
   rows: SaleRow[];
+};
+
+type StockDataset = {
+  sourceFiles: string[];
+  uploadedAt: string;
+  rows: StockRow[];
 };
 
 type DailyPoint = {
@@ -48,24 +56,6 @@ function addMetric<K extends string>(
   current.units += sign * row.quantity;
   current.profit += sign * (row.total - row.cost);
   map.set(key, current);
-}
-
-function phoneModel(product: string) {
-  const text = product.toUpperCase();
-  const patterns: Array<[RegExp, string]> = [
-    [/REALME\s+14\s+5G/, "Realme 14 5G"],
-    [/REALME\s+C71\s+5G/, "Realme C71 5G"],
-    [/REALME\s+C71\s+4G/, "Realme C71 4G"],
-    [/REALME\s+C85\s+4G/, "Realme C85 4G"],
-    [/REALME\s+NOTE\s+70\s+4G/, "Realme Note 70 4G"],
-    [/INFINIX\s+HOT\s+60I/, "Infinix Hot 60i"],
-    [/INFINIX\s+SMART\s+10/, "Infinix Smart 10"],
-    [/XIAOMI\s+REDMI\s+14C\s+4G/, "Xiaomi Redmi 14C 4G"],
-  ];
-  return (
-    patterns.find(([pattern]) => pattern.test(text))?.[1] ??
-    product.replace(/^Celular\s+/i, "").split(/\s+/).slice(0, 4).join(" ")
-  );
 }
 
 function analyzeRows(rows: SaleRow[]) {
@@ -105,7 +95,9 @@ function analyzeRows(rows: SaleRow[]) {
     }
     addMetric(categories, row.category, row);
     addMetric(stores, row.store, row);
-    if (row.category === "Celulares") addMetric(phones, phoneModel(row.product), row);
+    if (row.category === "Celulares") {
+      addMetric(phones, phoneModelName(row.product), row);
+    }
   }
 
   const categoryList = [...categories.entries()]
@@ -167,6 +159,49 @@ function analyzeRows(rows: SaleRow[]) {
     ly115,
     minDate,
     maxDate,
+  };
+}
+
+function analyzeStock(rows: StockRow[], soldPhones: ReturnType<typeof analyzeRows>["phones"]) {
+  const models = new Map<
+    string,
+    { light: number; boaVista: number; total: number; cost: number }
+  >();
+  for (const row of rows) {
+    if (!/^celular\b/i.test(row.product)) continue;
+    const model = phoneModelName(row.product);
+    const current = models.get(model) ?? { light: 0, boaVista: 0, total: 0, cost: 0 };
+    if (row.store.includes("SHOPPING LIGHT")) current.light += row.quantity;
+    if (row.store.includes("BOA VISTA")) current.boaVista += row.quantity;
+    current.total += row.quantity;
+    current.cost += row.cost;
+    models.set(model, current);
+  }
+
+  const soldByModel = new Map(soldPhones.map((phone) => [phone.name, phone.units]));
+  const allModels = new Set([...models.keys(), ...soldByModel.keys()]);
+  const comparison = [...allModels]
+    .map((model) => {
+      const stock = models.get(model) ?? { light: 0, boaVista: 0, total: 0, cost: 0 };
+      const sold = soldByModel.get(model) ?? 0;
+      const coverage = sold > 0 ? stock.total / sold : null;
+      let status = "Sem venda";
+      if (sold > 0 && stock.total === 0) status = "Sem estoque";
+      else if (sold > 0 && stock.total < sold) status = "Crítico";
+      else if (sold > 0 && stock.total < sold * 2) status = "Atenção";
+      else if (sold > 0) status = "Coberto";
+      return { model, sold, coverage, status, ...stock };
+    })
+    .sort((a, b) => b.sold - a.sold || b.total - a.total || a.model.localeCompare(b.model));
+
+  return {
+    comparison,
+    total: comparison.reduce((sum, item) => sum + item.total, 0),
+    light: comparison.reduce((sum, item) => sum + item.light, 0),
+    boaVista: comparison.reduce((sum, item) => sum + item.boaVista, 0),
+    riskModels: comparison.filter(
+      (item) => item.status === "Sem estoque" || item.status === "Crítico",
+    ).length,
   };
 }
 
@@ -301,18 +336,34 @@ function DailySalesChart({
 
 export default function Home() {
   const [dataset, setDataset] = useState<Dataset>(initialSales as Dataset);
+  const [stockDataset, setStockDataset] = useState<StockDataset>(
+    initialStock as StockDataset,
+  );
   const [uploadState, setUploadState] = useState<
     "idle" | "uploading" | "success" | "error"
   >("idle");
+  const [stockUploadState, setStockUploadState] = useState<
+    "idle" | "uploading" | "success" | "error"
+  >("idle");
   const [message, setMessage] = useState("");
+  const [stockMessage, setStockMessage] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const stockInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     let active = true;
     fetch("/api/dashboard")
       .then((response) => response.json())
       .then((payload) => {
-        if (active && payload.rows?.length) setDataset(payload as Dataset);
+        if (!active) return;
+        if (payload.rows?.length) setDataset(payload as Dataset);
+        if (payload.stockRows?.length) {
+          setStockDataset({
+            sourceFiles: payload.stockSourceFiles,
+            uploadedAt: payload.stockUploadedAt,
+            rows: payload.stockRows,
+          });
+        }
       })
       .catch(() => undefined);
     return () => {
@@ -321,6 +372,10 @@ export default function Home() {
   }, []);
 
   const analysis = useMemo(() => analyzeRows(dataset.rows), [dataset.rows]);
+  const stockAnalysis = useMemo(
+    () => analyzeStock(stockDataset.rows, analysis.phones),
+    [stockDataset.rows, analysis.phones],
+  );
   const storeMax = Math.max(...analysis.stores.map((item) => item.revenue), 1);
   const phoneMax = Math.max(...analysis.phones.map((item) => item.revenue), 1);
 
@@ -348,7 +403,44 @@ export default function Home() {
     }
   }
 
+  async function onStockFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const files = [...(event.target.files ?? [])];
+    if (!files.length) return;
+    setStockUploadState("uploading");
+    setStockMessage("Processando os estoques das duas lojas…");
+    try {
+      const formData = new FormData();
+      files.forEach((file) => formData.append("files", file));
+      const response = await fetch("/api/stock", { method: "POST", body: formData });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "Falha ao importar os estoques.");
+      setStockDataset(payload as StockDataset);
+      setStockUploadState("success");
+      setStockMessage(
+        `Estoques atualizados: ${integer.format(
+          payload.rows.reduce(
+            (sum: number, row: StockRow) => sum + row.quantity,
+            0,
+          ),
+        )} celulares.`,
+      );
+    } catch (error) {
+      setStockUploadState("error");
+      setStockMessage(
+        error instanceof Error ? error.message : "Não foi possível importar os estoques.",
+      );
+    } finally {
+      event.target.value = "";
+    }
+  }
+
   const updatedAt = new Date(dataset.uploadedAt).toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const stockUpdatedAt = new Date(stockDataset.uploadedAt).toLocaleString("pt-BR", {
     day: "2-digit",
     month: "short",
     hour: "2-digit",
@@ -552,6 +644,110 @@ export default function Home() {
                 <strong>{money.format(phone.revenue)}</strong>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="panel stock-panel">
+          <div className="panel-header stock-header">
+            <div>
+              <h2>Estoque de celulares × vendas</h2>
+              <p>
+                Estoque atual por loja comparado às unidades líquidas vendidas no período
+              </p>
+            </div>
+            <div className="stock-actions">
+              <span>Estoque de {stockUpdatedAt}</span>
+              <input
+                ref={stockInputRef}
+                className="sr-only"
+                type="file"
+                accept=".xlsx,.xls"
+                multiple
+                onChange={onStockFileChange}
+                aria-label="Selecionar estoques do Shopping Light e Boa Vista"
+              />
+              <button
+                className="secondary-button"
+                type="button"
+                onClick={() => stockInputRef.current?.click()}
+                disabled={stockUploadState === "uploading"}
+              >
+                <span aria-hidden="true">↥</span>
+                {stockUploadState === "uploading"
+                  ? "Processando…"
+                  : "Atualizar estoques"}
+              </button>
+            </div>
+          </div>
+
+          {stockMessage && (
+            <div className={`stock-message ${stockUploadState}`} role="status">
+              {stockMessage}
+            </div>
+          )}
+
+          <div className="stock-summary" aria-label="Resumo do estoque de celulares">
+            <div>
+              <span>Estoque total</span>
+              <strong>{integer.format(stockAnalysis.total)}</strong>
+              <small>celulares</small>
+            </div>
+            <div>
+              <span>Shopping Light</span>
+              <strong>{integer.format(stockAnalysis.light)}</strong>
+              <small>celulares</small>
+            </div>
+            <div>
+              <span>Boa Vista</span>
+              <strong>{integer.format(stockAnalysis.boaVista)}</strong>
+              <small>celulares</small>
+            </div>
+            <div className={stockAnalysis.riskModels ? "summary-risk" : ""}>
+              <span>Modelos críticos</span>
+              <strong>{integer.format(stockAnalysis.riskModels)}</strong>
+              <small>sem estoque ou abaixo das vendas</small>
+            </div>
+          </div>
+
+          <div className="stock-table" role="table" aria-label="Estoque e vendas por modelo">
+            <div className="stock-table-head" role="row">
+              <span>Modelo</span>
+              <span>Vendidos</span>
+              <span>Light</span>
+              <span>Boa Vista</span>
+              <span>Estoque</span>
+              <span>Estoque ÷ venda</span>
+              <span>Situação</span>
+            </div>
+            {stockAnalysis.comparison.map((item) => (
+              <div className="stock-table-row" role="row" key={item.model}>
+                <strong>{item.model}</strong>
+                <span>{integer.format(item.sold)}</span>
+                <span>{integer.format(item.light)}</span>
+                <span>{integer.format(item.boaVista)}</span>
+                <strong>{integer.format(item.total)}</strong>
+                <span>
+                  {item.coverage === null
+                    ? "—"
+                    : `${item.coverage.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      })}×`}
+                </span>
+                <span
+                  className={`stock-status status-${item.status
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/\s+/g, "-")
+                    .toLowerCase()}`}
+                >
+                  {item.status}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="stock-source">
+            Fontes: {stockDataset.sourceFiles.join(" · ")}
           </div>
         </section>
 

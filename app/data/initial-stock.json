@@ -1,0 +1,394 @@
+{
+  "sourceFiles": [
+    "Light.xlsx",
+    "Boa vista.xlsx"
+  ],
+  "uploadedAt": "2026-07-29T12:44:04.981Z",
+  "rows": [
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "12PRO+-5G-256-SM-F7",
+      "product": "Celular Realme 12 Pro + 5G 256GB Submarine Blue 8GB RAM Tela 6,72\"",
+      "quantity": 1,
+      "cost": 2215.74
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "14-5G-256-8-SI-F7",
+      "product": "Celular Realme 14 5G 256GB Mecha Silver 8GB RAM",
+      "quantity": 2,
+      "cost": 3241.98
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "14-5G-256-8-TI-F7",
+      "product": "Celular Realme 14 5G 256GB Storm Titanium 8GB RAM",
+      "quantity": 1,
+      "cost": 1620.99
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C71-4G-128-4-BR-F7",
+      "product": "Celular Realme C71 4G White Swan 128GB ROM 4GB Tela-F7",
+      "quantity": 1,
+      "cost": 909.62
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C71-4G-128-4-VD-F7",
+      "product": "Celular Realme C71 4G Forest Owl 128GB ROM 4GB Tela-F7",
+      "quantity": 2,
+      "cost": 1819.24
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C71-4G-256-8-BR-F7",
+      "product": "Celular Realme C71 4G White Swan 256GB ROM 8GB Tela-F7",
+      "quantity": 1,
+      "cost": 1131.19
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C71-4G-256-8-VD-F7",
+      "product": "Celular Realme C71 4G Forest Owl 256GB ROM 8GB Tela-F7",
+      "quantity": 4,
+      "cost": 4524.76
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C71-5G-256-8-PT-F7",
+      "product": "Celular Realme C71 5G Carbon Black 256GB ROM 8GB Tela-F7",
+      "quantity": 1,
+      "cost": 1259.47
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C71-5G-256-8-VD-F7",
+      "product": "Celular Realme C71 5G Peridot Green 256GB ROM 8GB Tela-F7",
+      "quantity": 2,
+      "cost": 2518.94
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C85-4G-128-6-AZ-F7",
+      "product": "Celular Realme C85 4G 128GB 6GB RAM Blue Tela 6,72 - F7",
+      "quantity": 2,
+      "cost": 2518.94
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "C85-4G-128-6-PR-F7",
+      "product": "Celular Realme C85 4G 128GB 6GB RAM Black Tela 6,72 - F7",
+      "quantity": 1,
+      "cost": 1259.47
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "HONOR7D-5G-256-12-PT -FF7",
+      "product": "Celular Honor X7D 5G 256GB Black RAM 12GV- FF7",
+      "quantity": 2,
+      "cost": 3334
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "HONORX5B-4G-256-8-PT -FF7",
+      "product": "Celular Honor X5B PLUS 4G 8GB RAM 256GB ROM - BLACK- FF7",
+      "quantity": 2,
+      "cost": 1664
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "HOT60-4G-256-8-CZ-F7",
+      "product": "Celular Infinix Hot 60i 256GB Titanium Silver RAM 8GB- F7",
+      "quantity": 1,
+      "cost": 920
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "HOT60-4G-256-8-PT-F7",
+      "product": "Celular Infinix Hot 60i 256GB Sleek Black RAM 8GB- F7",
+      "quantity": 1,
+      "cost": 920
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "NOTE15PRO-5G-512-16-PT-FF7",
+      "product": "Celular Xiaomi Redmi Note 15 Pro 5G NFC BR 16GB RAM (8+8GB) + 512GB- F7",
+      "quantity": 2,
+      "cost": 5700.74
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "NOTE70-4G-128-6-PT-F7",
+      "product": "Celular Realme Note 70 4G Obsidian Black 128GB ROM 4GB Tela-F7",
+      "quantity": 3,
+      "cost": 2142.27
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "NOTE70-4G-256-4-DO-F7",
+      "product": "Celular Realme Note 70 4G Beach Gold 256GB ROM 4GB Tela-F7",
+      "quantity": 2,
+      "cost": 2005.84
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "NOTE70-4G-256-8-PT-F7",
+      "product": "Celular Realme Note 70 4G Obsidian Black 256GB ROM 8GB Tela-F7",
+      "quantity": 3,
+      "cost": 3008.76
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "POCOM8-5G-256-12-CZ-F7",
+      "product": "Celular Poco M8 5G NFC BR 16GB RAM 256GB Silver-F7",
+      "quantity": 2,
+      "cost": 4027.94
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "POCOX7-5G-512-12-PT",
+      "product": "Celular Xiaomi POCO X7 5G 512GB 12GB RAM Black",
+      "quantity": 2,
+      "cost": 4943.92
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "POCOX8PRO-5G-512-12-BR-F7",
+      "product": "Celular Poco X8 PRO 5G NFC BR 12GB RAM 512GB White",
+      "quantity": 2,
+      "cost": 7704.04
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "REDMI14C-4G-128-4-AZ- FF7",
+      "product": "Celular Xiaomi Redmi 14C 4G 128GB 4GB RAM Blue",
+      "quantity": 1,
+      "cost": 791.53
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "REDMI14C-4G-128-4-PT- FF7",
+      "product": "Celular Xiaomi Redmi 14C 4G 128GB 4GB RAM Black",
+      "quantity": 2,
+      "cost": 1583.06
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "REDMI14C-4G-256-8-AZ- FF7",
+      "product": "Celular Xiaomi Redmi 14C 4G 256GB 8GB RAM Blue",
+      "quantity": 1,
+      "cost": 888.89
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "REDMINOTE14-4G-256-8-PT",
+      "product": "Celular Redmi Note 14 4G 256GB 8GB RAM Black",
+      "quantity": 2,
+      "cost": 3712.16
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "X6B-5G-256-8-VD",
+      "product": "Celular Honor X6B 5G 8GB RAM 256GB ROM - VERDE",
+      "quantity": 2,
+      "cost": 2464
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "12PRO+-5G-512-12-AZ-F7",
+      "product": "Celular Realme 12 Pro + 5G 512GB Submarine Blue 12GB RAM Tela 6,72\"",
+      "quantity": 1,
+      "cost": 0
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "14-5G-256-8-SI-F7",
+      "product": "Celular Realme 14 5G 256GB Mecha Silver 8GB RAM",
+      "quantity": 2,
+      "cost": 3241.98
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "14-5G-256-8-TI-F7",
+      "product": "Celular Realme 14 5G 256GB Storm Titanium 8GB RAM",
+      "quantity": 2,
+      "cost": 3241.98
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C71-4G-128-4-BR-F7",
+      "product": "Celular Realme C71 4G White Swan 128GB ROM 4GB Tela-F7",
+      "quantity": 2,
+      "cost": 1819.24
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C71-4G-128-4-VD-F7",
+      "product": "Celular Realme C71 4G Forest Owl 128GB ROM 4GB Tela-F7",
+      "quantity": 3,
+      "cost": 2728.86
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C71-4G-256-8-BR-F7",
+      "product": "Celular Realme C71 4G White Swan 256GB ROM 8GB Tela-F7",
+      "quantity": 3,
+      "cost": 3393.57
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C71-4G-256-8-VD-F7",
+      "product": "Celular Realme C71 4G Forest Owl 256GB ROM 8GB Tela-F7",
+      "quantity": 1,
+      "cost": 1131.19
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C71-5G-256-8-PT-F7",
+      "product": "Celular Realme C71 5G Carbon Black 256GB ROM 8GB Tela-F7",
+      "quantity": 2,
+      "cost": 2518.94
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C71-5G-256-8-VD-F7",
+      "product": "Celular Realme C71 5G Peridot Green 256GB ROM 8GB Tela-F7",
+      "quantity": 2,
+      "cost": 2518.94
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C85-4G-128-6-PR-F7",
+      "product": "Celular Realme C85 4G 128GB 6GB RAM Black Tela 6,72 - F7",
+      "quantity": 2,
+      "cost": 2518.94
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C85-4G-256-8-AZ-F7",
+      "product": "Celular Realme C85 4G 256GB 8GB RAM Blue Tela 6,72 - F7",
+      "quantity": 1,
+      "cost": 1309.03
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "C85-4G-256-8-PR-F7",
+      "product": "Celular Realme C85 4G 256GB 8GB RAM Black Tela 6,72 - F7",
+      "quantity": 1,
+      "cost": 1259.47
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "HONOR7D-5G-256-12-PT -FF7",
+      "product": "Celular Honor X7D 5G 256GB Black RAM 12GV- FF7",
+      "quantity": 2,
+      "cost": 3334
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "HONORX5B-4G-256-8-PT -FF7",
+      "product": "Celular Honor X5B PLUS 4G 8GB RAM 256GB ROM - BLACK- FF7",
+      "quantity": 2,
+      "cost": 1664
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "HOT60-4G-256-8-CZ-F7",
+      "product": "Celular Infinix Hot 60i 256GB Titanium Silver RAM 8GB- F7",
+      "quantity": 2,
+      "cost": 1840
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "NOTE15PRO-5G-512-16-PT-FF7",
+      "product": "Celular Xiaomi Redmi Note 15 Pro 5G NFC BR 16GB RAM (8+8GB) + 512GB- F7",
+      "quantity": 2,
+      "cost": 5700.74
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "NOTE70-4G-128-4-DO-F7",
+      "product": "Celular Realme Note 70 4G Beach Gold 128GB ROM 4GB Tela-F7",
+      "quantity": 2,
+      "cost": 1541.64
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "NOTE70-4G-128-6-PT-F7",
+      "product": "Celular Realme Note 70 4G Obsidian Black 128GB ROM 4GB Tela-F7",
+      "quantity": 4,
+      "cost": 2856.36
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "NOTE70-4G-256-8-DO-F7",
+      "product": "Celular Realme Note 70 4G Beach Gold 256GB ROM 8GB Tela-F7",
+      "quantity": 2,
+      "cost": 0
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "NOTE70-4G-256-8-PT-F7",
+      "product": "Celular Realme Note 70 4G Obsidian Black 256GB ROM 8GB Tela-F7",
+      "quantity": 3,
+      "cost": 3008.76
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "POCOM8-5G-256-12-CZ-F7",
+      "product": "Celular Poco M8 5G NFC BR 16GB RAM 256GB Silver-F7",
+      "quantity": 2,
+      "cost": 4027.94
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "POCOX7-5G-512-12-PT",
+      "product": "Celular Xiaomi POCO X7 5G 512GB 12GB RAM Black",
+      "quantity": 2,
+      "cost": 4943.92
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "POCOX8PRO-5G-512-12-BR-F7",
+      "product": "Celular Poco X8 PRO 5G NFC BR 12GB RAM 512GB White",
+      "quantity": 2,
+      "cost": 7704.04
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "REDMI14C-4G-128-4-AZ- FF7",
+      "product": "Celular Xiaomi Redmi 14C 4G 128GB 4GB RAM Blue",
+      "quantity": 2,
+      "cost": 1583.06
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "REDMI14C-4G-128-4-PT- FF7",
+      "product": "Celular Xiaomi Redmi 14C 4G 128GB 4GB RAM Black",
+      "quantity": 2,
+      "cost": 1583.06
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "REDMI14C-4G-256-8-AZ- FF7",
+      "product": "Celular Xiaomi Redmi 14C 4G 256GB 8GB RAM Blue",
+      "quantity": 2,
+      "cost": 1777.78
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "REDMINOTE14-4G-256-8-PT",
+      "product": "Celular Redmi Note 14 4G 256GB 8GB RAM Black",
+      "quantity": 2,
+      "cost": 3712.16
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "X6B-5G-256-8-VD",
+      "product": "Celular Honor X6B 5G 8GB RAM 256GB ROM - VERDE",
+      "quantity": 2,
+      "cost": 2464
+    }
+  ]
+}

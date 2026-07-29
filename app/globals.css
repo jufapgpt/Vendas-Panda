@@ -636,6 +636,180 @@ input:focus-visible {
   background: var(--blue);
 }
 
+.stock-panel {
+  margin-top: 22px;
+  overflow: hidden;
+}
+
+.stock-header {
+  align-items: center;
+}
+
+.stock-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.stock-actions > span {
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.secondary-button {
+  min-height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #cad3e4;
+  border-radius: 8px;
+  background: white;
+  color: var(--blue);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  background: #f5f8ff;
+}
+
+.secondary-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.stock-message {
+  margin: 16px 24px 0;
+  padding: 11px 13px;
+  border-radius: 7px;
+  background: #eef4ff;
+  color: #2457e6;
+  font-size: 12px;
+}
+
+.stock-message.error {
+  background: #fff1f0;
+  color: #b42318;
+}
+
+.stock-message.success {
+  background: #ecfdf3;
+  color: #067647;
+}
+
+.stock-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--line);
+}
+
+.stock-summary > div {
+  min-height: 112px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--line);
+}
+
+.stock-summary > div:last-child {
+  border-right: 0;
+}
+
+.stock-summary span,
+.stock-summary small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.stock-summary strong {
+  margin: 5px 0 1px;
+  color: var(--ink);
+  font-size: 27px;
+  line-height: 1;
+}
+
+.stock-summary .summary-risk strong {
+  color: #b42318;
+}
+
+.stock-table {
+  width: 100%;
+}
+
+.stock-table-head,
+.stock-table-row {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.7fr)
+    repeat(4, minmax(66px, 0.48fr))
+    minmax(100px, 0.7fr)
+    minmax(100px, 0.72fr);
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+}
+
+.stock-table-head {
+  min-height: 46px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.stock-table-row {
+  min-height: 54px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.stock-table-head > span:not(:first-child),
+.stock-table-row > span:not(:first-child),
+.stock-table-row > strong:nth-child(5) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-status {
+  justify-self: end;
+  padding: 5px 8px;
+  border-radius: 99px;
+  background: #f2f4f7;
+  color: #475467;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-sem-estoque,
+.status-critico {
+  background: #fee4e2;
+  color: #b42318;
+}
+
+.status-atencao {
+  background: #fef0c7;
+  color: #b54708;
+}
+
+.status-coberto {
+  background: #dcfae6;
+  color: #067647;
+}
+
+.stock-source {
+  padding: 14px 24px 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+}
+
 footer {
   padding: 22px 2px 0;
   display: flex;
@@ -666,6 +840,27 @@ footer {
   .ranking-head,
   .ranking-row {
     grid-template-columns: 38px minmax(180px, 1.5fr) minmax(100px, 1fr) 65px minmax(110px, 0.8fr);
+  }
+
+  .stock-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stock-summary > div:nth-child(2) {
+    border-right: 0;
+  }
+
+  .stock-summary > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stock-table {
+    overflow-x: auto;
+  }
+
+  .stock-table-head,
+  .stock-table-row {
+    min-width: 920px;
   }
 }
 
@@ -727,6 +922,30 @@ footer {
 
   .panel-header > span {
     text-align: right;
+  }
+
+  .stock-header {
+    align-items: flex-start;
+  }
+
+  .stock-actions {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stock-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-summary > div,
+  .stock-summary > div:nth-child(2) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stock-summary > div:last-child {
+    border-bottom: 0;
   }
 
   .ranking-table {

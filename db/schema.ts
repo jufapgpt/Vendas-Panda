@@ -29,3 +29,24 @@ export const salesRows = sqliteTable("sales_rows", {
   payment: text("payment").notNull(),
   priceType: text("price_type").notNull(),
 });
+
+export const stockBatches = sqliteTable("stock_batches", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  store: text("store").notNull(),
+  fileName: text("file_name").notNull(),
+  objectKey: text("object_key").notNull(),
+  rowCount: integer("row_count").notNull(),
+  uploadedAt: text("uploaded_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const stockRows = sqliteTable("stock_rows", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  batchId: integer("batch_id")
+    .notNull()
+    .references(() => stockBatches.id, { onDelete: "cascade" }),
+  store: text("store").notNull(),
+  productCode: text("product_code").notNull(),
+  product: text("product").notNull(),
+  quantity: real("quantity").notNull(),
+  cost: real("cost").notNull(),
+});
