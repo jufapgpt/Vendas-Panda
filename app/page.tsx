@@ -42,6 +42,11 @@ const percent = new Intl.NumberFormat("pt-BR", {
   style: "percent",
   maximumFractionDigits: 1,
 });
+const percentTwo = new Intl.NumberFormat("pt-BR", {
+  style: "percent",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 function signFor(row: SaleRow) {
   return row.type.includes("devol") ? -1 : 1;
@@ -673,7 +678,7 @@ export default function Home() {
             <article className="panel store-panel">
               <div className="panel-header">
                 <h2>Comparativo por loja</h2>
-                <span>Receita líquida</span>
+                <span>Receita líquida e margem</span>
               </div>
               <div className="panel-body">
                 {analysis.stores.map((store, index) => (
@@ -688,7 +693,21 @@ export default function Home() {
                         style={{ width: `${(store.revenue / storeMax) * 100}%` }}
                       />
                     </div>
-                    <small>{integer.format(store.units)} itens líquidos</small>
+                    <div className="store-row-details">
+                      <small>{integer.format(store.units)} itens líquidos</small>
+                      <span
+                        className={
+                          store.profit < 0 ? "store-margin negative" : "store-margin"
+                        }
+                      >
+                        Margem: <strong>{money.format(store.profit)}</strong>
+                        <b>
+                          {store.revenue
+                            ? percentTwo.format(store.profit / store.revenue)
+                            : "—"}
+                        </b>
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
