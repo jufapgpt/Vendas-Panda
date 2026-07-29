@@ -3,7 +3,7 @@
     "Light.xlsx",
     "Boa vista.xlsx"
   ],
-  "uploadedAt": "2026-07-29T12:44:04.981Z",
+  "uploadedAt": "2026-07-29T14:20:39.823Z",
   "rows": [
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -74,13 +74,6 @@
       "product": "Celular Realme C85 4G 128GB 6GB RAM Blue Tela 6,72 - F7",
       "quantity": 2,
       "cost": 2518.94
-    },
-    {
-      "store": "PANDA SHOPPING LIGHT",
-      "code": "C85-4G-128-6-PR-F7",
-      "product": "Celular Realme C85 4G 128GB 6GB RAM Black Tela 6,72 - F7",
-      "quantity": 1,
-      "cost": 1259.47
     },
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -186,6 +179,20 @@
       "product": "Celular Redmi Note 14 4G 256GB 8GB RAM Black",
       "quantity": 2,
       "cost": 3712.16
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "SMART10-128-4-AZ-F7",
+      "product": "Infinix Smart 10 128GB 4GB RAM Iris Blue-F7",
+      "quantity": 2,
+      "cost": 1280
+    },
+    {
+      "store": "PANDA SHOPPING LIGHT",
+      "code": "SMART10-128-4-PT",
+      "product": "Infinix Smart 10 128GB 4GB RAM Sleek Black-F7",
+      "quantity": 5,
+      "cost": 3200
     },
     {
       "store": "PANDA SHOPPING LIGHT",
@@ -382,6 +389,27 @@
       "product": "Celular Redmi Note 14 4G 256GB 8GB RAM Black",
       "quantity": 2,
       "cost": 3712.16
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "SMART10-128-4-AZ-F7",
+      "product": "Infinix Smart 10 128GB 4GB RAM Iris Blue-F7",
+      "quantity": 2,
+      "cost": 1280
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "SMART10-128-4-PT",
+      "product": "Infinix Smart 10 128GB 4GB RAM Sleek Black-F7",
+      "quantity": 3,
+      "cost": 1920
+    },
+    {
+      "store": "PANDA BOA VISTA",
+      "code": "SMART10-256GB-4GB-PT",
+      "product": "Infinix Smart 10 256GB 4GB RAM Sleek Black",
+      "quantity": 1,
+      "cost": 0
     },
     {
       "store": "PANDA BOA VISTA",

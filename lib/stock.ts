@@ -43,6 +43,18 @@ export function phoneModelName(product: string) {
   );
 }
 
+export function isPhoneProduct(product: string) {
+  const text = product.trim().toUpperCase();
+  if (
+    /PEL[IÍ]CULA|CARREGADOR|CABO|FONE|HEADSET|SMARTWATCH|SMART WATCH|\bWATCH\b/.test(
+      text,
+    )
+  ) {
+    return false;
+  }
+  return /^(CELULAR\s+)?(REALME|INFINIX|XIAOMI|REDMI|POCO|HONOR)\b/.test(text);
+}
+
 export function parseStockWorkbook(buffer: ArrayBuffer, store: string): StockRow[] {
   const workbook = XLSX.read(buffer, { type: "array" });
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -65,7 +77,6 @@ export function parseStockWorkbook(buffer: ArrayBuffer, store: string): StockRow
       (row) =>
         row.code &&
         row.quantity > 0 &&
-        /^celular\b/i.test(row.product),
+        isPhoneProduct(row.product),
     );
 }
-

@@ -18,6 +18,18 @@ function numberFrom(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function isPhoneProduct(product) {
+  const text = product.trim().toUpperCase();
+  if (
+    /PEL[IÍ]CULA|CARREGADOR|CABO|FONE|HEADSET|SMARTWATCH|SMART WATCH|\bWATCH\b/.test(
+      text,
+    )
+  ) {
+    return false;
+  }
+  return /^(CELULAR\s+)?(REALME|INFINIX|XIAOMI|REDMI|POCO|HONOR)\b/.test(text);
+}
+
 const rows = [];
 for (const source of sources) {
   const workbook = XLSX.read(await fs.readFile(source.path), { type: "buffer" });
@@ -32,7 +44,7 @@ for (const source of sources) {
       quantity: numberFrom(record["QUANT."] ?? record.QUANT),
       cost: numberFrom(record["TOTAL CUSTO"]),
     };
-    if (row.code && row.quantity > 0 && /^celular\b/i.test(product)) rows.push(row);
+    if (row.code && row.quantity > 0 && isPhoneProduct(product)) rows.push(row);
   }
 }
 

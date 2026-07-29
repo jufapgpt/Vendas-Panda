@@ -10,7 +10,7 @@ import {
 import initialSales from "./data/initial-sales.json";
 import initialStock from "./data/initial-stock.json";
 import type { SaleRow } from "../lib/sales";
-import { phoneModelName, type StockRow } from "../lib/stock";
+import { isPhoneProduct, phoneModelName, type StockRow } from "../lib/stock";
 
 type Dataset = {
   sourceFile: string;
@@ -168,7 +168,7 @@ function analyzeStock(rows: StockRow[], soldPhones: ReturnType<typeof analyzeRow
     { light: number; boaVista: number; total: number; cost: number }
   >();
   for (const row of rows) {
-    if (!/^celular\b/i.test(row.product)) continue;
+    if (!isPhoneProduct(row.product)) continue;
     const model = phoneModelName(row.product);
     const current = models.get(model) ?? { light: 0, boaVista: 0, total: 0, cost: 0 };
     if (row.store.includes("SHOPPING LIGHT")) current.light += row.quantity;
