@@ -47,7 +47,7 @@ export function inferProductCategory(
   if (/PELICULA/.test(text)) return "Películas";
   if (/\bTABLET\b|\bIPAD\b/.test(text)) return "Tablet";
   if (
-    /ASPIRADOR|BALANCA|ESPELHO|SMARTWATCH|SMART WATCH|\bWATCH\b|\bWHATCH\b/.test(
+    /ASPIRADOR|BALANCA|SMARTWATCH|SMART WATCH|\bWATCH\b|\bWHATCH\b/.test(
       text,
     )
   ) {
@@ -56,6 +56,6 @@ export function inferProductCategory(
   if (isPhoneDescription(product, code)) return "Celulares";
 
   // Cabos, carregadores, fones, microfones, suportes, chopeiras,
-  // LEDs portáteis e demais complementos entram em Acessórios.
+  // LEDs portáteis, espelhos e demais complementos entram em Acessórios.
   return "Acessórios";
 }
