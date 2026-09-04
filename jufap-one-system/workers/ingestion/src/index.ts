@@ -19,7 +19,7 @@ async function main(): Promise<void> {
     log("warn", "no_enabled_sources", {
       service: "ingestion",
       configPath: config.SOURCE_CONFIG_PATH,
-      sourceCode: config.SOURCE_CODE,
+      sourceCode: config.SOURCE_CODE ?? null,
     });
     return;
   }

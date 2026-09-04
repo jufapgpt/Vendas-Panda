@@ -1,10 +1,10 @@
 export type LogLevel = "debug" | "info" | "warn" | "error";
 
 export interface LogContext {
-  requestId?: string;
-  service?: string;
-  operation?: string;
-  sourceCode?: string;
+  requestId?: string | null;
+  service?: string | null;
+  operation?: string | null;
+  sourceCode?: string | null;
   [key: string]: unknown;
 }
 
