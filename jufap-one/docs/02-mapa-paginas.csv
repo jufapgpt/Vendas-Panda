@@ -1,0 +1,30 @@
+ordem,pagina_atual,dominio,papel_atual,destino_jufap_one,prioridade,tratamento
+1,RT,Comercial,Visão consolidada de metas e tendência,Pulso executivo|Resultado,Alta,Consolidar
+2,RT - Serviços,Comercial,Serviços e composição,Resultado|Composição,Alta,Consolidar
+3,RT - Faturamento TIM,Comercial,Meta realizado e tendência TIM,Resultado,Alta,Consolidar
+4,RT - FIBRA,Comercial,Desempenho de Fibra,Resultado|Composição,Alta,Consolidar
+5,RT - Financeiro,Comercial,Produção financeira,Resultado,Alta,Consolidar
+6,RT - Acessórios,Comercial,Meta e realizado de acessórios,Resultado|Composição,Alta,Consolidar
+7,RT - PITZI,Comercial,Proteção Pitzi,Resultado|Composição,Alta,Consolidar
+8,Ranking,Comercial,Ordenação de lojas e pessoas,Rede de lojas,Alta,Consolidar
+9,Destaques,Comercial,Reconhecimento de performance,Rede de lojas,Média,Consolidar
+10,Zerados,Comercial,Dias e indicadores sem produção,Rede de lojas|Alertas,Alta,Transformar em exceção
+11,Diário,Comercial,Produção diária,Ritmo,Alta,Consolidar
+12,Mix de Planos,Comercial,Composição de Pós e Controle,Composição,Alta,Consolidar
+13,Dependentes,Comercial,Agregação de dependentes,Composição,Média,Consolidar
+14,Portabilidade,Comercial,Solicitações e ativações,Composição|Qualidade,Alta,Consolidar
+15,Fat. TIM,Comercial,Faturamento detalhado,Resultado|Dossiê,Alta,Manter como detalhe
+16,UP G ou Z - Dados,UP,Base operacional de UP,UP,Alta,Consolidar
+17,Diário UP,UP,Evolução diária de UP,UP|Ritmo,Média,Consolidar
+18,Duplicata de UP G ou Z - Detalhado,UP,Duplicidades,UP|Qualidade,Alta,Transformar em fila
+19,Financeiro TIM,Comercial,Visão financeira TIM,Resultado|Dossiê,Alta,Manter como detalhe
+20,Velocidade,Comercial,Ritmo e necessidade diária,Pulso executivo|Ritmo,Alta,Consolidar
+21,Em identificação Datasys,Divergências,Registros sem identificação,Qualidade,Alta,Transformar em fila
+22,Sem vendedores encontrados - BU Móvel,Divergências,Falha de vínculo de vendedor,Qualidade,Alta,Transformar em fila
+23,Sem vendedores encontrados - BU Fibra,Divergências,Falha de vínculo de vendedor,Qualidade,Alta,Transformar em fila
+24,Sem vendedores encontrados - KPIs,Divergências,Falha de vínculo de vendedor,Qualidade,Alta,Transformar em fila
+25,DOJI,Comercial/Financeiro,Operação específica,Composição|Dossiê,Média,Validar conceito
+26,YOY - Data,Histórico,Comparação anual por data,Ritmo e histórico,Média,Consolidar
+27,YOY - Dia Semana,Histórico,Comparação por dia comparável,Ritmo e histórico,Alta,Consolidar
+28,YOY - Mês,Histórico,Comparação mensal,Ritmo e histórico,Média,Consolidar
+29,RT PITZI - Conversão,Comercial,Conversão de proteção,Composição,Alta,Consolidar
