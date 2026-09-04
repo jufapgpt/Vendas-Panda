@@ -45,11 +45,12 @@ jobs:
       - name: Validar tipos
         run: npm run typecheck
 
-      - name: Gerar site estático
+      - name: Gerar site estático portátil
         run: npm run build --workspace @jufap-one/web
         env:
           STATIC_DEPLOYMENT: 'true'
-          DEPLOY_BASE_PATH: '/jufapgpt/Vendas-Panda/jufap-one-live'
+          DEPLOY_BASE_PATH: ''
+          DEPLOY_ASSET_PREFIX: '.'
           NEXT_PUBLIC_DEMO_MODE: 'true'
           NEXT_PUBLIC_API_URL: ''
 
