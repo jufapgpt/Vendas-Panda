@@ -1,0 +1,27 @@
+name: JUFAP One — validação
+
+on:
+  push:
+    branches:
+      - jufap-one-prototype
+    paths:
+      - 'jufap-one/**'
+      - '.github/workflows/jufap-one-check.yml'
+  pull_request:
+    paths:
+      - 'jufap-one/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate static prototype
+        run: node jufap-one/tests/check.mjs
