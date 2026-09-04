@@ -29,11 +29,35 @@ O protótipo é um arquivo HTML autônomo: não depende de bibliotecas externas,
 - JUFAP Brief em formato editorial para e-mail.
 - Layout responsivo e versão para impressão/exportação.
 
+## Documentação produzida
+
+- [`01-auditoria-realizado-tendencia.md`](docs/01-auditoria-realizado-tendencia.md) — auditoria, riscos e decisões de migração.
+- [`02-mapa-paginas.csv`](docs/02-mapa-paginas.csv) — destino das 29 páginas atuais.
+- [`03-dicionario-indicadores.md`](docs/03-dicionario-indicadores.md) — medidas canônicas e critérios de reconciliação.
+- [`04-modelo-semantico.md`](docs/04-modelo-semantico.md) — dimensões, fatos, relacionamentos e segurança.
+- [`05-roadmap-implementacao.md`](docs/05-roadmap-implementacao.md) — fases, backlog e definição de pronto.
+- [`06-contrato-integracao.md`](docs/06-contrato-integracao.md) — estrutura de dados e endpoints sugeridos.
+- [`07-design-system-foco.md`](docs/07-design-system-foco.md) — sistema visual, atenção, acessibilidade e responsividade.
+
+## Escopo do PBI analisado
+
+- 29 páginas;
+- 442 componentes visuais;
+- 22 páginas comerciais;
+- 3 páginas de UP G/UP Z;
+- 4 páginas de divergências;
+- 219 segmentadores;
+- 54 cartões;
+- 21 matrizes;
+- 11 tabelas.
+
 ## Importante sobre os números
 
-Esta versão é um **MVP visual e funcional**. Os números demonstrativos reproduzem o snapshot analisado do Realizado e Tendência e existem para validar navegação, hierarquia, leitura e experiência. A ligação com o modelo semântico oficial será feita na fase de integração.
+Esta versão é um **MVP visual e funcional**. Os números demonstrativos reproduzem o snapshot analisado do Realizado e Tendência e existem para validar navegação, hierarquia, leitura e experiência.
 
-## Estrutura proposta
+O protótipo não apresenta o snapshot como informação ao vivo. A versão produtiva dependerá da reconciliação das expressões DAX, consultas M, relacionamentos, status e fontes do modelo semântico oficial.
+
+## Estrutura do produto
 
 1. Visão Geral
 2. Resultado
@@ -45,11 +69,11 @@ Esta versão é um **MVP visual e funcional**. Os números demonstrativos reprod
 8. Plano de Ação
 9. JUFAP Brief
 
-## Princípio do produto
+## Princípio
 
 > Simples na primeira camada, complexo sob demanda.
 
-O JUFAP One deve conduzir a diretoria por esta sequência:
+O JUFAP One conduz a diretoria por esta sequência:
 
 **resultado → causa → impacto → unidade responsável → ação**
 
