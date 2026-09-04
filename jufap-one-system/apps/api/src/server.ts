@@ -39,16 +39,17 @@ export async function buildServer(config: AppConfig): Promise<FastifyInstance> {
   });
 
   app.setErrorHandler((error, request, reply) => {
-    const unauthorized = error.name === "UnauthorizedError";
-    const forbidden = error.message.startsWith("Permissão negada");
-    log("error", error.message, {
+    const normalizedError = error instanceof Error ? error : new Error(String(error));
+    const unauthorized = normalizedError.name === "UnauthorizedError";
+    const forbidden = normalizedError.message.startsWith("Permissão negada");
+    log("error", normalizedError.message, {
       service: "api",
       requestId: request.id,
-      stack: config.NODE_ENV === "production" ? undefined : error.stack,
+      stack: config.NODE_ENV === "production" ? undefined : normalizedError.stack,
     });
     reply.code(unauthorized ? 401 : forbidden ? 403 : 500).send({
       error: unauthorized ? "unauthorized" : forbidden ? "forbidden" : "internal_error",
-      message: unauthorized || forbidden ? error.message : "Falha interna ao processar a solicitação.",
+      message: unauthorized || forbidden ? normalizedError.message : "Falha interna ao processar a solicitação.",
       requestId: request.id,
     });
   });
