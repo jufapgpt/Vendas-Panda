@@ -1,0 +1,65 @@
+openapi: 3.1.0
+info:
+  title: JUFAP One API
+  version: 0.1.0
+  description: API central da plataforma de inteligência gerencial JUFAP One.
+servers:
+  - url: http://localhost:4000
+paths:
+  /health:
+    get:
+      summary: Verifica o processo da API
+      responses:
+        "200":
+          description: Serviço disponível
+  /ready:
+    get:
+      summary: Verifica dependências essenciais
+      responses:
+        "200":
+          description: Dependências disponíveis ou modo mock ativo
+  /v1/overview:
+    get:
+      summary: Retorna a visão executiva do Realizado e Tendência
+      parameters:
+        - in: query
+          name: period
+          schema:
+            type: string
+            enum: [today, yesterday, tomorrow, month, closing, custom]
+        - in: query
+          name: scopeType
+          schema:
+            type: string
+            enum: [group, company, regional, coordinator, store]
+        - in: query
+          name: scopeId
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Visão executiva
+  /v1/metrics:
+    get:
+      summary: Lista o registro canônico de métricas
+      responses:
+        "200":
+          description: Métricas cadastradas
+  /v1/sources:
+    get:
+      summary: Lista o catálogo de fontes e o estado das conexões
+      responses:
+        "200":
+          description: Fontes cadastradas
+  /v1/actions:
+    get:
+      summary: Lista planos de ação no escopo selecionado
+      responses:
+        "200":
+          description: Planos de ação
+  /v1/quality:
+    get:
+      summary: Lista pendências e qualidade dos dados
+      responses:
+        "200":
+          description: Situação da qualidade
