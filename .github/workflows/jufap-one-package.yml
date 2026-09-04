@@ -1,0 +1,31 @@
+name: JUFAP One — pacote
+
+on:
+  push:
+    branches:
+      - jufap-one-prototype
+    paths:
+      - 'jufap-one/**'
+      - '.github/workflows/jufap-one-package.yml'
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Criar pacote
+        run: |
+          zip -r jufap-one-v0.1.zip jufap-one \
+            -x 'jufap-one/tests/*'
+          test -s jufap-one-v0.1.zip
+
+      - name: Publicar pacote
+        uses: actions/upload-artifact@v4
+        with:
+          name: jufap-one-v0.1
+          path: jufap-one-v0.1.zip
+          if-no-files-found: error
+          retention-days: 30
