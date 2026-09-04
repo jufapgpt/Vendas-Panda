@@ -2,64 +2,291 @@ openapi: 3.1.0
 info:
   title: JUFAP One API
   version: 0.1.0
-  description: API central da plataforma de inteligência gerencial JUFAP One.
+  description: API central da plataforma de inteligência gerencial do Grupo JUFAP.
 servers:
   - url: http://localhost:4000
+    description: Desenvolvimento local
 paths:
-  /health:
+  /health/live:
     get:
-      summary: Verifica o processo da API
+      summary: Verifica se o processo está ativo
       responses:
         "200":
-          description: Serviço disponível
-  /ready:
+          description: Processo ativo
+  /health/ready:
     get:
-      summary: Verifica dependências essenciais
+      summary: Verifica se as dependências essenciais estão disponíveis
       responses:
         "200":
-          description: Dependências disponíveis ou modo mock ativo
-  /v1/overview:
+          description: Serviço pronto
+        "503":
+          description: Serviço ainda não está pronto
+  /v1/dashboard/overview:
     get:
-      summary: Retorna a visão executiva do Realizado e Tendência
+      summary: Retorna a visão executiva consolidada
       parameters:
-        - in: query
-          name: period
-          schema:
-            type: string
-            enum: [today, yesterday, tomorrow, month, closing, custom]
-        - in: query
-          name: scopeType
-          schema:
-            type: string
-            enum: [group, company, regional, coordinator, store]
-        - in: query
-          name: scopeId
-          schema:
-            type: string
+        - $ref: "#/components/parameters/Period"
+        - $ref: "#/components/parameters/ScopeType"
+        - $ref: "#/components/parameters/ScopeId"
+        - $ref: "#/components/parameters/Indicator"
+        - $ref: "#/components/parameters/DateFrom"
+        - $ref: "#/components/parameters/DateTo"
       responses:
         "200":
-          description: Visão executiva
-  /v1/metrics:
+          description: Visão consolidada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OverviewResponse"
+        "400":
+          description: Filtros inválidos
+        "403":
+          description: Escopo não autorizado
+  /v1/stores/{storeId}:
     get:
-      summary: Lista o registro canônico de métricas
+      summary: Retorna o dossiê resumido de uma loja
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
-          description: Métricas cadastradas
-  /v1/sources:
-    get:
-      summary: Lista o catálogo de fontes e o estado das conexões
-      responses:
-        "200":
-          description: Fontes cadastradas
+          description: Loja localizada
+        "404":
+          description: Loja não localizada
   /v1/actions:
     get:
-      summary: Lista planos de ação no escopo selecionado
+      summary: Lista os planos de ação visíveis ao usuário
       responses:
         "200":
-          description: Planos de ação
-  /v1/quality:
+          description: Lista de ações
+  /v1/actions/{actionId}:
+    patch:
+      summary: Atualiza um plano de ação
+      parameters:
+        - name: actionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActionUpdate"
+      responses:
+        "200":
+          description: Ação atualizada
+        "400":
+          description: Atualização inválida
+        "404":
+          description: Ação não localizada
+  /v1/sources:
     get:
-      summary: Lista pendências e qualidade dos dados
+      summary: Lista o catálogo de fontes
       responses:
         "200":
-          description: Situação da qualidade
+          description: Catálogo de fontes
+  /v1/metrics:
+    get:
+      summary: Lista o catálogo de indicadores e fórmulas
+      responses:
+        "200":
+          description: Catálogo de indicadores
+  /v1/brief:
+    get:
+      summary: Gera o conteúdo do JUFAP Brief
+      parameters:
+        - $ref: "#/components/parameters/Period"
+        - $ref: "#/components/parameters/ScopeType"
+        - $ref: "#/components/parameters/ScopeId"
+        - $ref: "#/components/parameters/Indicator"
+      responses:
+        "200":
+          description: Conteúdo editorial gerado
+components:
+  parameters:
+    Period:
+      name: period
+      in: query
+      schema:
+        type: string
+        enum: [today, yesterday, tomorrow, month, closing, custom]
+        default: month
+    ScopeType:
+      name: scopeType
+      in: query
+      schema:
+        type: string
+        enum: [group, company, regional, coordinator, store]
+        default: group
+    ScopeId:
+      name: scopeId
+      in: query
+      required: false
+      schema:
+        type: string
+    Indicator:
+      name: indicator
+      in: query
+      schema:
+        type: string
+        default: TIM_REVENUE
+    DateFrom:
+      name: dateFrom
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+    DateTo:
+      name: dateTo
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date
+  schemas:
+    DataQuality:
+      type: object
+      required: [score, state, pendingRecords, pendingValue, updatedAt, message]
+      properties:
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        state:
+          type: string
+          enum: [consolidated, partial, processing, warning, unreliable]
+        pendingRecords:
+          type: integer
+          minimum: 0
+        pendingValue:
+          type: number
+          minimum: 0
+        updatedAt:
+          type: string
+          format: date-time
+        message:
+          type: string
+    MetricSnapshot:
+      type: object
+      required: [code, label, unit, value, severity, quality]
+      properties:
+        code:
+          type: string
+        label:
+          type: string
+        unit:
+          type: string
+          enum: [currency, count, percent, days, hours, score]
+        value:
+          type: number
+        goal:
+          type: [number, "null"]
+        achievement:
+          type: [number, "null"]
+        trend:
+          type: [number, "null"]
+        trendAchievement:
+          type: [number, "null"]
+        gap:
+          type: [number, "null"]
+        neededPerDay:
+          type: [number, "null"]
+        comparison:
+          type: [number, "null"]
+        comparisonLabel:
+          type: string
+        severity:
+          type: string
+          enum: [positive, neutral, attention, critical]
+        quality:
+          $ref: "#/components/schemas/DataQuality"
+    OverviewResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [scopeLabel, asOf, quality, kpis, indicatorStrip, narrative, stores, composition, rhythm, upStages, qualityIssues, actions]
+          properties:
+            scopeLabel:
+              type: string
+            asOf:
+              type: string
+              format: date-time
+            quality:
+              $ref: "#/components/schemas/DataQuality"
+            kpis:
+              type: array
+              minItems: 4
+              maxItems: 4
+              items:
+                $ref: "#/components/schemas/MetricSnapshot"
+            indicatorStrip:
+              type: array
+              items:
+                $ref: "#/components/schemas/MetricSnapshot"
+            narrative:
+              type: object
+              additionalProperties: true
+            stores:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            composition:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            rhythm:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            upStages:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            qualityIssues:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            actions:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+        meta:
+          type: object
+          required: [requestId, generatedAt, dataMode]
+          properties:
+            requestId:
+              type: string
+            generatedAt:
+              type: string
+              format: date-time
+            dataMode:
+              type: string
+              enum: [mock, database]
+    ActionUpdate:
+      type: object
+      minProperties: 1
+      properties:
+        status:
+          type: string
+          enum: [pending, in_progress, blocked, done]
+        owner:
+          type: string
+        dueAt:
+          type: string
+          format: date-time
+        description:
+          type: string
