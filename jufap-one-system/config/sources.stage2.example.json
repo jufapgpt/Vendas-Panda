@@ -1,0 +1,52 @@
+{
+  "sources": [
+    {
+      "code": "BASE_DATASYS",
+      "name": "Base Datasys",
+      "domain": "commercial",
+      "operation": "TIM",
+      "pathPrefix": "A_PREENCHER/Realizado e Tendencia/Datasys",
+      "filePattern": "*.xlsx",
+      "sheetNames": [],
+      "expectedGrain": "uma ativacao ou mudanca de status por linha",
+      "keyColumns": [],
+      "dateColumns": [],
+      "frequency": "intraday",
+      "owner": "A definir",
+      "sensitivity": "restricted",
+      "enabled": false
+    },
+    {
+      "code": "BASE_SALES",
+      "name": "Base de vendas",
+      "domain": "commercial",
+      "operation": "TIM",
+      "pathPrefix": "A_PREENCHER/Realizado e Tendencia/Vendas",
+      "filePattern": "*.xlsx",
+      "sheetNames": [],
+      "expectedGrain": "um pedido ou item vendido por linha",
+      "keyColumns": [],
+      "dateColumns": [],
+      "frequency": "intraday",
+      "owner": "A definir",
+      "sensitivity": "restricted",
+      "enabled": false
+    },
+    {
+      "code": "STORE_UNIFIED_AUX",
+      "name": "Auxiliar unificada para lojas",
+      "domain": "shared",
+      "operation": "TIM",
+      "pathPrefix": "A_PREENCHER/Cadastros/Lojas",
+      "filePattern": "*.xlsx",
+      "sheetNames": [],
+      "expectedGrain": "uma loja e vigencia organizacional por linha",
+      "keyColumns": [],
+      "dateColumns": [],
+      "frequency": "daily",
+      "owner": "A definir",
+      "sensitivity": "internal",
+      "enabled": false
+    }
+  ]
+}

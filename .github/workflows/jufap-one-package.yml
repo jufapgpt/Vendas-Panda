@@ -1,0 +1,35 @@
+name: JUFAP One — pacote
+
+on:
+  push:
+    branches:
+      - jufap-one-prototype
+    paths:
+      - 'jufap-one/**'
+      - '.github/workflows/jufap-one-package.yml'
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validar conteúdo do pacote
+        run: |
+          test -s jufap-one/index.html
+          test -s jufap-one/README.md
+          test -d jufap-one/docs
+
+      - name: Publicar pacote
+        uses: actions/upload-artifact@v4
+        with:
+          name: jufap-one-v0.1
+          path: |
+            jufap-one/index.html
+            jufap-one/README.md
+            jufap-one/STATUS.md
+            jufap-one/docs
+          if-no-files-found: error
+          retention-days: 30

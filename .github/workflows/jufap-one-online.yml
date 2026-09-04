@@ -1,0 +1,102 @@
+name: JUFAP One — Publicar site online
+
+on:
+  push:
+    branches:
+      - jufap-one-foundation
+    paths:
+      - 'jufap-one-system/apps/web/**'
+      - 'jufap-one-system/packages/**'
+      - 'jufap-one-system/package.json'
+      - 'jufap-one-system/package-lock.json'
+      - 'jufap-one-system/tsconfig.base.json'
+      - 'jufap-one-system/turbo.json'
+      - '.github/workflows/jufap-one-online.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jufap-one-online
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: jufap-one-system
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
+
+      - name: Validar tipos
+        run: npm run typecheck
+
+      - name: Gerar site estático portátil
+        run: npm run build --workspace @jufap-one/web
+        env:
+          STATIC_DEPLOYMENT: 'true'
+          DEPLOY_BASE_PATH: ''
+          DEPLOY_ASSET_PREFIX: '.'
+          NEXT_PUBLIC_DEMO_MODE: 'true'
+          NEXT_PUBLIC_API_URL: ''
+
+      - name: Preparar publicação
+        run: |
+          rm -rf /tmp/jufap-one-live
+          mkdir -p /tmp/jufap-one-live
+          cp -R apps/web/out/. /tmp/jufap-one-live/
+          touch /tmp/jufap-one-live/.nojekyll
+          cp /tmp/jufap-one-live/index.html /tmp/jufap-one-live/404.html
+          cat > /tmp/jufap-one-live/deployment.json <<EOF
+          {
+            "application": "JUFAP One",
+            "environment": "online-homologation",
+            "sourceBranch": "${GITHUB_REF_NAME}",
+            "sourceCommit": "${GITHUB_SHA}",
+            "publishedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "dataMode": "mock",
+            "integrations": {
+              "oneDrive": "pending-stage-2",
+              "powerBiDax": "pending-reconciliation",
+              "authentication": "mock"
+            }
+          }
+          EOF
+
+      - name: Publicar na branch jufap-one-live
+        working-directory: .
+        run: |
+          git config user.name "JUFAP One Deploy"
+          git config user.email "jufap.gpt@gmail.com"
+          git checkout --orphan jufap-one-live
+          git rm -rf . || true
+          git clean -fdx
+          cp -R /tmp/jufap-one-live/. .
+          git add -A
+          git commit -m "deploy: JUFAP One online ${GITHUB_SHA::7}"
+          git push --force origin HEAD:jufap-one-live
+
+      - name: Resumo
+        working-directory: .
+        run: |
+          echo "## JUFAP One publicado" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Ambiente online de homologação:" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://raw.githack.com/jufapgpt/Vendas-Panda/jufap-one-live/index.html" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Os dados continuam demonstrativos até a etapa 2." >> "$GITHUB_STEP_SUMMARY"
