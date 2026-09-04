@@ -1,0 +1,13 @@
+{
+  "application": "JUFAP One",
+  "environment": "online-homologation",
+  "sourceBranch": "jufap-one-foundation",
+  "sourceCommit": "1814f9539b33c7cf528b76dbf85cfa8ae72ce792",
+  "publishedAt": "2026-09-04T18:03:38Z",
+  "dataMode": "mock",
+  "integrations": {
+    "oneDrive": "pending-stage-2",
+    "powerBiDax": "pending-reconciliation",
+    "authentication": "mock"
+  }
+}
