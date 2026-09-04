@@ -8,7 +8,7 @@ export interface ReconciliationInput {
   candidateValue: number;
   toleranceAbsolute: number;
   toleranceRelative: number;
-  details?: Record<string, unknown>;
+  details?: Record<string, unknown> | undefined;
 }
 
 export interface ReconciliationResult extends ReconciliationInput {
