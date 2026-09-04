@@ -1,0 +1,63 @@
+name: JUFAP One — renderização
+
+on:
+  push:
+    branches:
+      - jufap-one-prototype
+    paths:
+      - 'jufap-one/**'
+      - '.github/workflows/jufap-one-preview.yml'
+  pull_request:
+    paths:
+      - 'jufap-one/**'
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Localizar Chrome
+        id: chrome
+        run: |
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME"
+          echo "path=$CHROME" >> "$GITHUB_OUTPUT"
+
+      - name: Renderizar desktop
+        run: |
+          "${{ steps.chrome.outputs.path }}" \
+            --headless \
+            --no-sandbox \
+            --disable-gpu \
+            --hide-scrollbars \
+            --virtual-time-budget=3000 \
+            --window-size=1440,1100 \
+            --screenshot=jufap-one-desktop.png \
+            "file://$GITHUB_WORKSPACE/jufap-one/index.html"
+          test -s jufap-one-desktop.png
+
+      - name: Renderizar mobile
+        run: |
+          "${{ steps.chrome.outputs.path }}" \
+            --headless \
+            --no-sandbox \
+            --disable-gpu \
+            --hide-scrollbars \
+            --virtual-time-budget=3000 \
+            --window-size=430,932 \
+            --screenshot=jufap-one-mobile.png \
+            "file://$GITHUB_WORKSPACE/jufap-one/index.html"
+          test -s jufap-one-mobile.png
+
+      - name: Publicar evidências
+        uses: actions/upload-artifact@v4
+        with:
+          name: jufap-one-preview
+          path: |
+            jufap-one-desktop.png
+            jufap-one-mobile.png
+          if-no-files-found: error
+          retention-days: 30
