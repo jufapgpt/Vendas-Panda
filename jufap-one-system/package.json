@@ -17,10 +17,11 @@
     "build": "turbo build",
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
-    "test": "tsx --test tests/**/*.test.ts",
+    "test": "npm run build --workspace @jufap-one/core && tsx --test tests/**/*.test.ts",
+    "check": "npm run typecheck && npm run build && npm run test",
     "db:up": "docker compose up -d postgres redis",
     "db:down": "docker compose down",
-    "db:migrate": "node scripts/run-sql.mjs database/migrations/0001_init.sql",
+    "db:migrate": "node scripts/run-sql.mjs database/migrations/0001_init.sql && node scripts/run-sql.mjs database/migrations/0002_ingestion.sql",
     "db:seed": "node scripts/run-sql.mjs database/seeds/0001_dev.sql",
     "pbi:audit": "python tools/pbi-audit/scan_pbip.py",
     "format": "prettier --write ."
@@ -29,6 +30,7 @@
     "@types/node": "^22.19.0",
     "pg": "^8.16.3",
     "prettier": "^3.6.2",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.6",
     "turbo": "^2.5.8",
     "typescript": "^5.9.3"
