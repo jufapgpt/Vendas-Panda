@@ -16,16 +16,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Criar pacote
+      - name: Validar conteúdo do pacote
         run: |
-          zip -r jufap-one-v0.1.zip jufap-one \
-            -x 'jufap-one/tests/*'
-          test -s jufap-one-v0.1.zip
+          test -s jufap-one/index.html
+          test -s jufap-one/README.md
+          test -d jufap-one/docs
 
       - name: Publicar pacote
         uses: actions/upload-artifact@v4
         with:
           name: jufap-one-v0.1
-          path: jufap-one-v0.1.zip
+          path: |
+            jufap-one/index.html
+            jufap-one/README.md
+            jufap-one/STATUS.md
+            jufap-one/docs
           if-no-files-found: error
           retention-days: 30
